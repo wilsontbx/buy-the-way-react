@@ -1,15 +1,14 @@
 import React from "react";
-import ReactDOM from 'react-dom'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import NavBar from './components/NavBar'
-
-import 'bulma'
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import siteHeader from "./components/siteHeader";
+import "bulma";
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <NavBar />
+        <siteHeader />
         <Switch>
           <Route path="/"></Route>
         </Switch>
