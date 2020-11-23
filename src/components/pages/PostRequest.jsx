@@ -40,7 +40,7 @@ class PostRequest extends React.Component {
                         </div>
 
                         <div className="field">
-                            <label className="label">Food or collectible items</label>
+                            <label className="label">Category</label>
                             <div className="control">
 
                                 <div className="select is-fullwidth">
