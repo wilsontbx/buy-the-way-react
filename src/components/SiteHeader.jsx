@@ -3,8 +3,18 @@ import "./SiteHeader.scss";
 import { Link } from "react-router-dom";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { withRouter } from "react-router-dom";
+import { withCookies } from "react-cookie";
 
-class NavBarHeader extends React.Component {
+class SiteHeader extends React.Component {
+  isAuthenticated() {
+    const token = this.props.cookies.get("token");
+    if (!token) {
+      return false;
+    }
+    return true;
+  }
+
   render() {
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -33,13 +43,14 @@ class NavBarHeader extends React.Component {
 
         <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
-            <Link to="/postrequest" className="navbar-item">POST-REQUEST</Link>
+            <Link to="/postrequest" className="navbar-item">
+              POST-REQUEST
+            </Link>
 
             <Link className="navbar-item">PRE-ORDER</Link>
 
             <div className="navbar-item has-dropdown is-hoverable">
               <Link className="navbar-link">More Info</Link>
-
               <div className="navbar-dropdown">
                 <Link className="navbar-item">Travel Bubble Information</Link>
                 <Link className="navbar-item">What to do before you leave</Link>
@@ -66,12 +77,27 @@ class NavBarHeader extends React.Component {
 
           <div className="navbar-end">
             <div className="navbar-item">
-              <div className="buttons">
-                <Link className="button is-primary">
-                  <strong>Sign up</strong>
-                </Link>
-                <Link className="button is-light">Log in</Link>
-              </div>
+              {this.isAuthenticated() ? (
+                <div className="navbar-item has-dropdown is-hoverable">
+                  <Link className="navbar-link">
+                    <strong>Username</strong>
+                  </Link>
+                  <div className="navbar-dropdown">
+                    <Link className="navbar-item">Dashboard</Link>
+                    <hr className="navbar-divider" />
+                    <Link className="navbar-item">Logout</Link>
+                  </div>
+                </div>
+              ) : (
+                <div className="buttons">
+                  <Link to="/users/register" className="button is-primary">
+                    <strong>Sign up</strong>
+                  </Link>
+                  <Link to="/users/login" className="button is-light">
+                    Log in
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -80,4 +106,4 @@ class NavBarHeader extends React.Component {
   }
 }
 
-export default NavBarHeader;
+export default withCookies(withRouter(SiteHeader));
