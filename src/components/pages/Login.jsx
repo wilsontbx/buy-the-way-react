@@ -39,6 +39,7 @@ class Login extends React.Component {
           this.setState({
             formErr: "The email address and password you entered don't match.",
           });
+          return;
         }
         this.props.cookies.set("token", response.data.token, {
           path: "/",
