@@ -1,8 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SiteHeader from "./components/SiteHeader";
 import PostRequest from "./components/pages/PostRequest";
+import Login from "./components/pages/Login";
+import Register from "./components/pages/Register";
+import GuestRoute from "./components/GuestRoute";
 import "bulma";
 
 function App() {
@@ -10,9 +12,13 @@ function App() {
     <div className="App">
       <Router>
         <SiteHeader />
-    
+
         <Switch>
-          <Route path='/PostRequest'><PostRequest /></Route>
+          <Route path="/PostRequest">
+            <PostRequest />
+          </Route>
+          <GuestRoute path="/users/login" component={Login} />
+          <GuestRoute path="/users/register" component={Register} />
           <Route path="/"></Route>
         </Switch>
       </Router>
