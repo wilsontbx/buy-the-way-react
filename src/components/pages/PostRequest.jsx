@@ -1,13 +1,29 @@
 import React from "react";
+import { Link } from 'react-router-dom'
 import "./PostRequest.scss";
 
 class PostRequest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: "",
+      category: null,
       showfood: false,
       showcollectible: false,
+      productname: null,
+      imageurl: null,
+      country: null,
+      foodexpiry: null,
+      foodchilled: null,
+      foodspecial: null,
+      collectspecial: null,
+      collectnextday: null,
+      url: null,
+      qty: null,
+      price: null,
+      message: null,
+      receipt: null
+
+
     };
   }
 
@@ -32,6 +48,13 @@ class PostRequest extends React.Component {
       });
     }
   }
+  handleInputChange(e) {
+    const state = {}
+    state[e.target.name] = e.target.value
+    this.setState(state)
+  }
+
+
 
   render() {
     return (
@@ -49,6 +72,7 @@ class PostRequest extends React.Component {
                   type="text"
                   name="productname"
                   placeholder="Enter the product name"
+                  onChange={e => { this.handleInputChange(e) }}
                 />
               </div>
             </div>
@@ -57,7 +81,8 @@ class PostRequest extends React.Component {
               <label className="label">Photo</label>
               <div className="file is-boxed">
                 <label className="file-label">
-                  <input className="file-input" type="file" name="imageurl" />
+                  <input className="file-input" type="file" name="imageurl"
+                    onChange={e => { this.handleInputChange(e) }} />
                   <span className="file-cta">
                     <span className="file-icon">
                       <i className="fas fa-upload"></i>
@@ -74,7 +99,7 @@ class PostRequest extends React.Component {
               <label className="label">Country</label>
               <div className="control">
                 <div className="select is-fullwidth">
-                  <select name="country">
+                  <select name="country" onChange={e => { this.handleInputChange(e) }}>
                     <option>Hong Kong</option>
                     <option>Japan</option>
                     <option>Korea</option>
@@ -114,17 +139,17 @@ class PostRequest extends React.Component {
                   <div className="control">
                     <label className="checkbox">
                       Does it have an expiry of 3-5 days?
-                      <input type="checkbox" name="foodexpiry" />
+                      <input type="checkbox" name="foodexpiry" onChange={e => { this.handleInputChange(e) }}/>
                     </label>
                     {/* <div className="control"> */}
                     <label className="checkbox">
                       Does it need to be chilled?
-                      <input type="checkbox" name="foodchilled" />
+                      <input type="checkbox" name="foodchilled" onChange={e => { this.handleInputChange(e) }}/>
                     </label>
                     {/* </div> */}
                     <label className="checkbox">
                       Do you require special handling?
-                      <input type="checkbox" name="foodspecial" />
+                      <input type="checkbox" name="foodspecial" onChange={e => { this.handleInputChange(e) }}/>
                     </label>
                   </div>
                 </div>
@@ -138,12 +163,12 @@ class PostRequest extends React.Component {
                   <div className="control">
                     <label className="radio px-2">
                       Yes, it requires special handling
-                      <input type="radio" name="collectspecial" />
+                      <input type="radio" name="collectspecial" onChange={e => { this.handleInputChange(e) }}/>
                     </label>
                     {/* <div className="control"> */}
                     <label className="radio">
                       No,the item is safe for the next-day delivery
-                      <input type="radio" name="collectnextday" />
+                      <input type="radio" name="collectnextday" onChange={e => { this.handleInputChange(e) }}/>
                     </label>
                   </div>
                 </div>
@@ -160,6 +185,7 @@ class PostRequest extends React.Component {
                   type="text"
                   name="url"
                   placeholder="Enter the URL for reference"
+                  onChange={e => { this.handleInputChange(e) }}
                 />
               </div>
             </div>
@@ -172,6 +198,7 @@ class PostRequest extends React.Component {
                   type="text"
                   name="qty"
                   placeholder=""
+                  onChange={e => { this.handleInputChange(e) }}
                 />
               </p>
               <p className="control">
@@ -195,6 +222,7 @@ class PostRequest extends React.Component {
                   type="text"
                   name="price"
                   placeholder="Amount in SGD"
+                  onChange={e => { this.handleInputChange(e) }}
                 />
               </p>
             </div>
@@ -205,17 +233,18 @@ class PostRequest extends React.Component {
                 className="textarea has-fixed-size"
                 name="message"
                 placeholder="Please indicate colors, special handling, etc"
+                onChange={e => { this.handleInputChange(e) }}
               ></textarea>
             </div>
 
             <div className="control">
               <strong>Do you require a receipt? </strong>
               <label className="radio px-2">
-                <input type="radio" name="receipt" />
+                <input type="radio" name="receipt" onChange={e => { this.handleInputChange(e) }}/>
                 Yes
               </label>
               <label className="radio px-2">
-                <input type="radio" name="receipt" />
+                <input type="radio" name="receipt" onChange={e => { this.handleInputChange(e) }} />
                 No
               </label>
             </div>
@@ -223,7 +252,30 @@ class PostRequest extends React.Component {
         </div>
         <div>
           <p className="control">
-            <a className="button is-primary">Next</a>
+            <Link to={{
+
+              pathname: "/PostConfirmation",
+              state: {
+                productname: this.state.productname,
+                imageurl: this.state.imageurl,
+                category: this.state.category,
+              
+            
+                country: this.state.country,
+                foodexpiry: this.state.foodexpiry,
+                foodchilled: this.state.foodchilled,
+                foodspecial: this.state.foodspecial,
+                collectspecial: this.state.collectspecial,
+                collectnextday: this.state.collectnextday,
+                url: this.state.url,
+                qty: this.state.qty,
+                price: this.state.price,
+                message: this.state.message,
+                receipt: this.state.receipt
+
+              }
+            }}
+              className="button is-primary">Next</Link>
           </p>
         </div>
       </div>
