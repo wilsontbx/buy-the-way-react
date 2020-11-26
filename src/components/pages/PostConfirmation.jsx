@@ -6,7 +6,23 @@ class PostConfirmation extends React.Component {
         super(props)
 
         this.state = {
-            name: ''
+
+            productname: null,
+            category: null,
+            showfood: false,
+            showcollectible: false,
+            imageurl: null,
+            country: null,
+            foodexpiry: null,
+            foodchilled: null,
+            foodspecial: null,
+            collectspecial: null,
+            collectnextday: null,
+            url: null,
+            qty: null,
+            price: null,
+            message: null,
+            receipt: null
         }
     }
 
@@ -14,14 +30,28 @@ class PostConfirmation extends React.Component {
 
         // check if this.state.test !==""
         if (this.props.location.state && this.props.location.state.productname) {
-            console.log(this.props.location.state)
+
             this.setState({
-                name: this.props.location.state.productname
+                name: this.props.location.state.name,
+                category: this.props.location.state.category,
+                showfood: this.props.location.state.showfood,
+                showcollectible: this.props.location.state.showcollectible,
+                productname: this.props.location.state.productname,
+                imageurl: this.props.location.state.imageurl,
+                country: this.props.location.state.country,
+                foodexpiry: this.props.location.state.foodexpiry,
+                foodchilled: this.props.location.state.foodchilled,
+                foodspecial: this.props.location.state.foodspecial,
+                collectspecial: this.props.location.state.collectspecial,
+                collectnextday: this.props.location.state.collectnextday,
+                url: this.props.location.state.url,
+                qty: this.props.location.state.qty,
+                price: this.props.location.state.price,
+                message: this.props.location.state.message,
+                receipt: this.props.location.state.receipt
 
             })
-
-            console.log(this.state.productname)
-
+            console.log(Object.keys(this.state).map((item, idx) => { console.log(idx) }))
         }
     }
 
@@ -29,18 +59,35 @@ class PostConfirmation extends React.Component {
 
         return (
 
-            <div className="container">
+            <div className="container mt-5 ml-5">
 
 
                 <div className="card">
                     <div className="card-header">
-                        <div className="card-header-title">  </div>
+                        <div className="card-header-title"> Confirmation </div>
 
                     </div>
-                    <div className="card-content">{this.state.name}</div>
+                    <div className="columns is-centered">
+                        <div className="column is-narrow">
+                            <table className="table mt-5">
+                                <tbody>
 
+
+                                    {Object.keys(this.state).map((item, idx) => {
+                                        return (<tr><td className="has-text-weight-bold"> {item}: </td>
+                                            <td> {Object.values(this.state)[idx]}</td></tr>)
+                                    })}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <button className="button is-primary has-text-right">Confirm</button>
+                    <button className="button is-danger"> Back</button>
                 </div>
             </div>
+
         )
     }
 }
