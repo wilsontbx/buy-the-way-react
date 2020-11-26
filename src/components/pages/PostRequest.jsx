@@ -113,20 +113,22 @@ class PostRequest extends React.Component {
                 <div className="field">
                   <div className="control">
                     <label className="checkbox">
-                      Does it have an expiry of 3-5 days?
                       <input type="checkbox" name="foodexpiry" />
-                    </label>
-                    {/* <div className="control"> */}
-                    <label className="checkbox">
-                      Does it need to be chilled?
-                      <input type="checkbox" name="foodchilled" />
-                    </label>
-                    {/* </div> */}
-                    <label className="checkbox">
-                      Do you require special handling?
-                      <input type="checkbox" name="foodspecial" />
+                      Does it have an expiry of 3-5 days?
                     </label>
                   </div>
+
+                  <div className="control">
+                    <label className="checkbox">
+                      <input type="checkbox" name="foodchilled" />
+                      Does it need to be chilled?
+                    </label>
+                  </div>
+
+                  <label className="checkbox">
+                    <input type="checkbox" name="foodspecial" />
+                      Do you require special handling?
+                    </label>
                 </div>
               </div>
             ) : null}
@@ -136,14 +138,13 @@ class PostRequest extends React.Component {
                 <label className="label">Is this item fragile?</label>
                 <div className="field">
                   <div className="control">
-                    <label className="radio px-2">
-                      Yes, it requires special handling
-                      <input type="radio" name="collectspecial" />
+                    <label className="checkbox">
+                      <input type="checkbox" name="collectspecial" />Yes, it requires special handling
                     </label>
-                    {/* <div className="control"> */}
-                    <label className="radio">
+
+                    <label className="checkbox">
+                      <input type="checkbox" name="collectnextday" />
                       No,the item is safe for the next-day delivery
-                      <input type="radio" name="collectnextday" />
                     </label>
                   </div>
                 </div>
@@ -210,23 +211,25 @@ class PostRequest extends React.Component {
 
             <div className="control">
               <strong>Do you require a receipt? </strong>
-              <label className="radio px-2">
-                <input type="radio" name="receipt" />
+              <label className="checkbox px-2">
+                <input type="checkbox" name="receipt" />
                 Yes
               </label>
-              <label className="radio px-2">
-                <input type="radio" name="receipt" />
+              <label className="checkbox px-2">
+                <input type="checkbox" name="receipt" />
                 No
               </label>
             </div>
           </div>
         </div>
+
         <div>
           <p className="control">
             <a className="button is-primary">Next</a>
           </p>
         </div>
-      </div>
+
+      </div >
     );
   }
 }
