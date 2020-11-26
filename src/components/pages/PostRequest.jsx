@@ -138,20 +138,27 @@ class PostRequest extends React.Component {
                 <div className="field">
                   <div className="control">
                     <label className="checkbox">
+
                       Does it have an expiry of 3-5 days?
                       <input type="checkbox" name="foodexpiry" onChange={e => { this.handleInputChange(e) }}/>
+
                     </label>
-                    {/* <div className="control"> */}
+                  </div>
+
+                  <div className="control">
                     <label className="checkbox">
+
                       Does it need to be chilled?
                       <input type="checkbox" name="foodchilled" onChange={e => { this.handleInputChange(e) }}/>
                     </label>
-                    {/* </div> */}
-                    <label className="checkbox">
+                  </div>
+
+                  <label className="checkbox">
+                    <input type="checkbox" name="foodspecial" />
                       Do you require special handling?
+
                       <input type="checkbox" name="foodspecial" onChange={e => { this.handleInputChange(e) }}/>
                     </label>
-                  </div>
                 </div>
               </div>
             ) : null}
@@ -161,13 +168,17 @@ class PostRequest extends React.Component {
                 <label className="label">Is this item fragile?</label>
                 <div className="field">
                   <div className="control">
+
                     <label className="radio px-2">
                       Yes, it requires special handling
                       <input type="radio" name="collectspecial" onChange={e => { this.handleInputChange(e) }}/>
+
                     </label>
-                    {/* <div className="control"> */}
-                    <label className="radio">
+
+                    <label className="checkbox">
+                      <input type="checkbox" name="collectnextday" />
                       No,the item is safe for the next-day delivery
+
                       <input type="radio" name="collectnextday" onChange={e => { this.handleInputChange(e) }}/>
                     </label>
                   </div>
@@ -239,17 +250,20 @@ class PostRequest extends React.Component {
 
             <div className="control">
               <strong>Do you require a receipt? </strong>
+
               <label className="radio px-2">
                 <input type="radio" name="receipt" onChange={e => { this.handleInputChange(e) }}/>
                 Yes
               </label>
               <label className="radio px-2">
                 <input type="radio" name="receipt" onChange={e => { this.handleInputChange(e) }} />
+
                 No
               </label>
             </div>
           </div>
         </div>
+
         <div>
           <p className="control">
             <Link to={{
@@ -276,7 +290,8 @@ class PostRequest extends React.Component {
               className="button is-primary">Next</Link>
           </p>
         </div>
-      </div>
+
+      </div >
     );
   }
 }
