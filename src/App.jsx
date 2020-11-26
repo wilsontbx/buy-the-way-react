@@ -6,6 +6,7 @@ import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
 import GuestRoute from "./components/GuestRoute";
 import "bulma";
+import PostConfirmation from "./components/pages/PostConfirmation";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/PostRequest">
             <PostRequest />
           </Route>
+          <Route path="/PostConfirmation" component={PostConfirmation}></Route>
           <GuestRoute path="/users/login" component={Login} />
           <GuestRoute path="/users/register" component={Register} />
           <Route path="/"></Route>
