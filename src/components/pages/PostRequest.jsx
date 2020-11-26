@@ -259,8 +259,6 @@ class PostRequest extends React.Component {
                 productname: this.state.productname,
                 imageurl: this.state.imageurl,
                 category: this.state.category,
-              
-            
                 country: this.state.country,
                 foodexpiry: this.state.foodexpiry,
                 foodchilled: this.state.foodchilled,
