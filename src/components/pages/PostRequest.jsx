@@ -22,8 +22,6 @@ class PostRequest extends React.Component {
       price: null,
       message: null,
       receipt: null
-
-
     };
   }
 
@@ -161,20 +159,22 @@ class PostRequest extends React.Component {
             {this.state.showcollectible ? (
               <div id="collectible">
                 <label className="label">Is this item fragile?</label>
-                <div className="field">
-                  <div className="control">
-                    <label className="checkbox">
-                      <input type="checkbox" name="collectspecial" onChange={e => { this.handleInputChange(e) }} />
+                {/* <div className="field"> */}
+
+                <div className="control">
+                  <label className="radio">
+                    <input type="radio" name="collectspecial" onChange={e => { this.handleInputChange(e) }} />
                       Yes, it requires special handling
                     </label>
-
-                    <label className="checkbox">
-                      <input type="checkbox" name="collectnextday" onChange={e => { this.handleInputChange(e) }} />
-                      No, the item is safe for the next-day delivery
-                    </label>
-                  </div>
                 </div>
+
+                <label className="radio">
+                  <input type="radio" name="collectspecial" onChange={e => { this.handleInputChange(e) }} />
+                    No, the item is safe for the next-day delivery
+                  </label>
+                {/* </div> */}
               </div>
+
             ) : null}
           </div>
 
