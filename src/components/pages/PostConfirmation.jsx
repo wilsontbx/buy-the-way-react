@@ -74,8 +74,10 @@ class PostConfirmation extends React.Component {
 
 
                                     {Object.keys(this.state).map((item, idx) => {
+                                        if (Object.values(this.state)[idx] !==null && (Object.values(this.state)[idx])) {
                                         return (<tr><td className="has-text-weight-bold"> {item}: </td>
-                                            <td> {Object.values(this.state)[idx]}</td></tr>)
+                                                <td> {Object.values(this.state)[idx]}</td></tr>)
+                                        }
                                     })}
 
                                 </tbody>
