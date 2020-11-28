@@ -75,22 +75,24 @@ class PostRequest extends React.Component {
             </div>
 
             <div className="field">
-              <label className="label">Photo</label>
-              <div className="file is-boxed">
-                <label className="file-label">
-                  <input className="file-input" type="file" name="imageurl"
-                    onChange={e => { this.handleInputChange(e) }} />
-                  <span className="file-cta">
-                    <span className="file-icon">
-                      <i className="fas fa-upload"></i>
+              <div class="file has-name">
+                <label class="file-label">
+                  <input class="file-input" type="file" name="imageurl" />
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
                     </span>
-                    <span className="file-label has-text-grey">
+                    <span class="file-label">
                       Choose a file…
                     </span>
+                  </span>
+                  <span class="file-name">
+                    Screen Shot 2017-07-29 at 15.54.25.png
                   </span>
                 </label>
               </div>
             </div>
+
 
             <div className="field">
               <label className="label">Country</label>
