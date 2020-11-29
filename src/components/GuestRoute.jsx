@@ -6,7 +6,7 @@ class GuestRoute extends React.Component {
   // isAuthenticated will check if user is logged in or not
   isAuthenticated() {
     const token = this.props.cookies.get("token");
-    if (!token) {
+    if (!token || token === "undefined" || token === "null") {
       return false;
     }
 

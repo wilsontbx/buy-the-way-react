@@ -102,7 +102,10 @@ class Login extends React.Component {
             )}
             <Field className="mt-5">
               <Control>
-                <Button type="submit" color="button is-primary is-fullwidth">
+                <Button
+                  type="submit"
+                  className="button is-primary is-fullwidth"
+                >
                   <strong>Login</strong>
                 </Button>
               </Control>
