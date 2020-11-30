@@ -2,6 +2,13 @@ import React from "react";
 import { Link } from 'react-router-dom'
 import "./PostRequest.scss";
 
+
+
+// const cloudinaryCore = new cloudinary.Cloudinary({ cloud_name: 'demo' });
+// const SampleImg = () => (
+//   <img src={cloudinaryCore.url('sample')} />
+// );
+
 class PostRequest extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +17,8 @@ class PostRequest extends React.Component {
       showfood: false,
       showcollectible: false,
       productname: null,
-      imageurl: null,
+      imageUrl: null,
+      imageAlt: null,
       country: null,
       foodexpiry: null,
       foodchilled: null,
@@ -22,6 +30,7 @@ class PostRequest extends React.Component {
       message: null,
       receipt: null
     };
+
   }
 
   categoryChange(e) {
@@ -51,9 +60,36 @@ class PostRequest extends React.Component {
     this.setState(state)
   }
 
+  // handle image upload to cloudinary via endpoint
 
+  handleImageUpload = () => {
+    const { files } = document.querySelector('input[type="file"]')
+    console.log('Image file', files[0])
+
+    const formData = new FormData();
+    formData.append('file', files[0]);
+    // replace this with your upload preset name
+    formData.append('upload_preset', 'ml_default');
+    const options = {
+      method: 'POST',
+      body: formData,
+    };
+
+    // replace cloudname with your Cloudinary cloud_name
+    return fetch('https://api.Cloudinary.com/v1_1/duc6i2tt0/image/upload', options)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          imageUrl: res.secure_url,
+          imageAlt: `An image of ${res.original_filename}`
+        })
+      })
+      .catch(err => console.log(err));
+  }
 
   render() {
+    const { imageUrl, imageAlt } = this.state;
+
     return (
       <div className="container">
         <h2 className="title mt-2">
@@ -74,24 +110,24 @@ class PostRequest extends React.Component {
               </div>
             </div>
 
-            <div className="field">
-              <div class="file has-name">
-                <label class="file-label">
-                  <input class="file-input" type="file" name="imageurl" />
-                  <span class="file-cta">
-                    <span class="file-icon">
-                      <i class="fas fa-upload"></i>
-                    </span>
-                    <span class="file-label">
-                      Choose a file…
-                    </span>
-                  </span>
-                  <span class="file-name">
-                    Screen Shot 2017-07-29 at 15.54.25.png
-                  </span>
-                </label>
-              </div>
-            </div>
+            <main className="App">
+              <section className="left-side">
+                <form>
+                  <div className="form-group">
+                    <input type="file" />
+                  </div>
+
+                  <button type="button" className="btn" onClick={this.handleImageUpload}>Submit</button>
+
+                </form>
+              </section>
+              <section className="right-side">
+                <p>The resulting image will be displayed here</p>
+                {imageUrl && (
+                  <img src={imageUrl} alt={imageAlt} className="displayed-image" />
+                )}
+              </section>
+            </main>
 
 
             <div className="field">
