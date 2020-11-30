@@ -18,12 +18,23 @@ const backendAPI = {
       })
     );
   },
-  register: (email, password) => {
+  register: (firstname, lastname, username, email, password) => {
     return axiosInstance.post(
-      "/users/login",
+      "/users/register",
       qs.stringify({
+        first_name: firstname,
+        last_name: lastname,
+        username: username,
         email: email,
         password: password,
+      })
+    );
+  },
+  getUserInfo: (token) => {
+    return axiosInstance.post(
+      "/users/getuserinfo",
+      qs.stringify({
+        token: token,
       })
     );
   },

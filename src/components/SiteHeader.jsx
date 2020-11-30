@@ -1,21 +1,43 @@
 import React from "react";
 import "./SiteHeader.scss";
-import { Link } from "react-router-dom";
+import backendService from "../services/backendAPI";
+// import { Button } from "react-bulma-components";
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 
 class SiteHeader extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null,
+    };
+  }
   isAuthenticated() {
     const token = this.props.cookies.get("token");
-    if (!token) {
+    if (!token || token === "undefined" || token === "null") {
       return false;
     }
     return true;
   }
+  logout(e) {
+    e.preventDefault();
+    this.props.cookies.remove("token");
+  }
+  componentDidMount() {
+    const token = this.props.cookies.get("token");
+    if (token || !token === "undefined" || token === "null") {
+      backendService.getUserInfo(token).then((response) => {
+        this.setState({
+          username: response.data.username,
+        });
+      });
+    }
+  }
 
   render() {
+    let username = this.state.username;
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
@@ -80,12 +102,20 @@ class SiteHeader extends React.Component {
               {this.isAuthenticated() ? (
                 <div className="navbar-item has-dropdown is-hoverable">
                   <Link className="navbar-link">
-                    <strong>Username</strong>
+                    <strong>{username != null ? username : ""}</strong>
                   </Link>
-                  <div className="navbar-dropdown">
+                  <div className="navbar-dropdown is-right">
                     <Link className="navbar-item">Dashboard</Link>
                     <hr className="navbar-divider" />
-                    <Link className="navbar-item">Logout</Link>
+                    <Link
+                      to="/"
+                      onClick={(e) => {
+                        this.logout(e);
+                      }}
+                      className="navbar-item"
+                    >
+                      Logout
+                    </Link>
                   </div>
                 </div>
               ) : (
