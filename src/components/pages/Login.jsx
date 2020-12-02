@@ -45,6 +45,7 @@ class Login extends React.Component {
           path: "/",
           expires: moment.unix(response.data.expiresAt).toDate(),
         });
+        window.location.reload();
         this.props.history.push("/");
       })
       .catch((err) => {

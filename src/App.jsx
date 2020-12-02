@@ -7,6 +7,7 @@ import Register from "./components/pages/Register";
 import GuestRoute from "./components/GuestRoute";
 import "bulma";
 import PostConfirmation from "./components/pages/PostConfirmation";
+import Request from "./components/pages/Request";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Router>
         <SiteHeader />
         <Switch>
+          <Route path="/request" component={Request}></Route>
           <Route path="/PostRequest">
             <PostRequest />
           </Route>
