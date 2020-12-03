@@ -6,6 +6,12 @@ import { withCookies } from "react-cookie";
 import backendService from "../../services/backendAPI";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import IconButton from "@material-ui/core/IconButton";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const { Field, Control, Label } = Form;
 
@@ -16,6 +22,7 @@ class Login extends React.Component {
       email: "",
       password: "",
       formErr: "",
+      showPassword: false,
     };
   }
   handleEmailChange(e) {
@@ -28,6 +35,14 @@ class Login extends React.Component {
     this.setState({
       password: e.target.value,
     });
+  }
+
+  handleClickShowPassword(e) {
+    this.setState({ ...this.state, showPassword: !this.state.showPassword });
+  }
+
+  handleMouseDownPassword(e) {
+    e.preventDefault();
   }
 
   handleFormSubmission(e) {
@@ -81,19 +96,40 @@ class Login extends React.Component {
                 />
               </FormControl>
             </Field>
-            <Field>
-              <FormControl fullWidth>
-                <TextField
-                  id="standard-basic"
-                  type="password"
-                  label="Password"
-                  placeholder="••••••••"
-                  onChange={(e) => {
-                    this.handlePasswrdChange(e);
-                  }}
-                />
-              </FormControl>
-            </Field>
+
+            <FormControl fullWidth>
+              <InputLabel htmlFor="standard-adornment-password">
+                Password
+              </InputLabel>
+              <Input
+                id="standard-adornment-password"
+                placeholder="••••••••"
+                type={this.state.showPassword ? "text" : "password"}
+                value={this.state.password}
+                onChange={(e) => {
+                  this.handlePasswrdChange(e);
+                }}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={(e) => {
+                        this.handleClickShowPassword(e);
+                      }}
+                      onMouseDown={(e) => {
+                        this.handleMouseDownPassword(e);
+                      }}
+                    >
+                      {this.state.showPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
             {this.state.formErr !== "" ? (
               <div className="form-group">
                 <p>{this.state.formErr}</p>

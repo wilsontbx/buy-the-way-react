@@ -1,5 +1,17 @@
 import React from "react";
-
+import FormGroup from "@material-ui/core/FormGroup";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
+import Select from "@material-ui/core/Select";
+import Button from "@material-ui/core/Button";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 class Product extends React.Component {
   // handle image upload to cloudinary via endpoint
 
@@ -33,152 +45,149 @@ class Product extends React.Component {
     const { imageUrl, imageAlt } = this.props.item;
     return (
       <div>
-        <div className="field">
-          <label className="label">Product Name</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              name="productname"
-              placeholder="Enter the product name"
-              onChange={(e) => {
-                this.props.setCurrentState(e);
-              }}
-            />
-          </div>
-        </div>
+        <FormControl fullWidth>
+          <TextField
+            id="standard-basic"
+            type="text"
+            name="productname"
+            label="Product Name"
+            placeholder="Enter the product name"
+            onChange={(e) => {
+              this.props.setCurrentState(e);
+            }}
+          />
+        </FormControl>
 
-        <main className="App">
-          <section className="left-side">
+        <FormControl>
+          <section>
             <form>
               <div className="form-group">
-                <input type="file" />
+                <Button
+                  variant="contained"
+                  component="label"
+                  size="small"
+                  startIcon={<CloudUploadIcon />}
+                  onChange={this.handleImageUpload}
+                >
+                  Upload
+                  <input accept="image/*" type="file" hidden />
+                </Button>
               </div>
-
-              <button
-                type="button"
-                className="btn"
-                onClick={this.handleImageUpload}
-              >
-                Submit
-              </button>
             </form>
           </section>
-          <section className="right-side">
+
+          <section>
             <p>The resulting image will be displayed here</p>
             {imageUrl && (
-              <img src={imageUrl} alt={imageAlt} className="displayed-image" />
+              <figure className="image is-128x128">
+                <img
+                  src={imageUrl}
+                  alt={imageAlt}
+                  className="displayed-image"
+                />
+              </figure>
             )}
           </section>
-        </main>
-
-        <div className="field">
-          <label className="label">Country</label>
-          <div className="control">
-            <div className="select is-fullwidth">
-              <select
-                name="country"
-                onChange={(e) => {
-                  this.props.setCurrentState(e);
-                }}
-              >
-                <option>Hong Kong</option>
-                <option>Japan</option>
-                <option>Korea</option>
-              </select>
-            </div>
-          </div>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>Country</InputLabel>
+          <Select
+            name="country"
+            value={this.props.item.country}
+            onChange={(e) => {
+              this.props.setCurrentState(e);
+            }}
+          >
+            <MenuItem value={"Hong Kong"}>Hong Kong</MenuItem>
+            <MenuItem value={"Japan"}>Japan</MenuItem>
+            <MenuItem value={"Korea"}>Korea</MenuItem>
+          </Select>
           <p className="help is-black is-italic">
             Current available country is Hong Kong only
           </p>
-        </div>
+        </FormControl>
 
-        <div className="field">
-          <label className="label">Category</label>
-          <div className="control">
-            <div className="select is-fullwidth">
-              <select
-                onChange={(e) => {
-                  this.props.setCurrentState(e);
-                }}
-                name="category"
-              >
-                <option value="">Select dropdown</option>
-                <option value="Food">Food</option>
-                <option value="Collectible">Collectible item</option>
-              </select>
-            </div>
-          </div>
-        </div>
+        <FormControl fullWidth>
+          <InputLabel>Category</InputLabel>
+          <Select
+            name="category"
+            onChange={(e) => {
+              this.props.setCurrentState(e);
+            }}
+          >
+            <MenuItem value={""}>Select dropdown</MenuItem>
+            <MenuItem value={"Food"}>Food</MenuItem>
+            <MenuItem value={"Collectible"}>Collectible item</MenuItem>
+          </Select>
+        </FormControl>
 
         {this.props.item.category === "Food" ? (
-          <div id="food">
-            <label className="label">What is the nature of the product</label>
-
-            <div className="field">
-              <div className="control">
-                <input
-                  type="checkbox"
+          <FormGroup component="fieldset">
+            <FormLabel component="legend">
+              What is the nature of the product
+            </FormLabel>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.props.item.foodexpiry}
+                  onChange={(e) => {
+                    this.props.setCheckedBox(e);
+                  }}
                   name="foodexpiry"
-                  onChange={(e) => {
-                    this.props.setCurrentState(e);
-                  }}
+                  color="primary"
                 />
-                Does it have an expiry of 3-5 days?
-              </div>
-
-              <div className="control">
-                <label className="checkbox">
-                  <input
-                    type="checkbox"
-                    name="foodchilled"
-                    onChange={(e) => {
-                      this.props.setCurrentState(e);
-                    }}
-                  />
-                  Does it need to be chilled?
-                </label>
-              </div>
-
-              <label className="checkbox">
-                <input
-                  type="checkbox"
+              }
+              label="Does it have an expiry of 3-5 days?"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.props.item.foodchilled}
+                  onChange={(e) => {
+                    this.props.setCheckedBox(e);
+                  }}
+                  name="foodchilled"
+                  color="primary"
+                />
+              }
+              label="Does it need to be chilled?"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={this.props.item.foodspecial}
+                  onChange={(e) => {
+                    this.props.setCheckedBox(e);
+                  }}
                   name="foodspecial"
-                  onChange={(e) => {
-                    this.props.setCurrentState(e);
-                  }}
+                  color="primary"
                 />
-                Do you require special handling?
-              </label>
-            </div>
-          </div>
+              }
+              label="Do you require special handling?"
+            />
+          </FormGroup>
         ) : this.props.item.category === "Collectible" ? (
-          <div id="collectible">
-            <label className="label">Is this item fragile?</label>
-            <div className="control">
-              <label className="radio">
-                <input
-                  type="radio"
-                  name="collectspecial"
-                  onChange={(e) => {
-                    this.props.setCurrentState(e);
-                  }}
-                />
-                Yes, it requires special handling
-              </label>
-            </div>
-
-            <label className="radio">
-              <input
-                type="radio"
-                name="collectspecial"
-                onChange={(e) => {
-                  this.props.setCurrentState(e);
-                }}
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Is this item fragile?</FormLabel>
+            <RadioGroup
+              name="collectspecial"
+              value={this.props.item.collectspecial}
+              onChange={(e) => {
+                this.props.setCurrentState(e);
+              }}
+            >
+              <FormControlLabel
+                value="yes"
+                control={<Radio />}
+                label="Yes, it requires special handling"
               />
-              No, the item is safe for the next-day delivery
-            </label>
-          </div>
+              <FormControlLabel
+                value="no"
+                control={<Radio />}
+                label="No, the item is safe for the next-day delivery"
+              />
+            </RadioGroup>
+          </FormControl>
         ) : null}
       </div>
     );
