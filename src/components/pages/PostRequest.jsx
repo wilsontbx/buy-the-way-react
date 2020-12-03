@@ -1,8 +1,6 @@
 import React from "react";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import "./PostRequest.scss";
-
-
 
 // const cloudinaryCore = new cloudinary.Cloudinary({ cloud_name: 'demo' });
 // const SampleImg = () => (
@@ -28,9 +26,8 @@ class PostRequest extends React.Component {
       qty: null,
       price: null,
       message: null,
-      receipt: null
+      receipt: null,
     };
-
   }
 
   categoryChange(e) {
@@ -55,37 +52,40 @@ class PostRequest extends React.Component {
     }
   }
   handleInputChange(e) {
-    const state = {}
-    state[e.target.name] = e.target.value
-    this.setState(state)
+    const state = {};
+    state[e.target.name] = e.target.value;
+    this.setState(state);
   }
 
   // handle image upload to cloudinary via endpoint
 
   handleImageUpload = () => {
-    const { files } = document.querySelector('input[type="file"]')
-    console.log('Image file', files[0])
+    const { files } = document.querySelector('input[type="file"]');
+    console.log("Image file", files[0]);
 
     const formData = new FormData();
-    formData.append('file', files[0]);
+    formData.append("file", files[0]);
     // replace this with your upload preset name
-    formData.append('upload_preset', 'ml_default');
+    formData.append("upload_preset", "ml_default");
     const options = {
-      method: 'POST',
+      method: "POST",
       body: formData,
     };
 
     // replace cloudname with your Cloudinary cloud_name
-    return fetch('https://api.Cloudinary.com/v1_1/duc6i2tt0/image/upload', options)
-      .then(res => res.json())
-      .then(res => {
+    return fetch(
+      "https://api.Cloudinary.com/v1_1/duc6i2tt0/image/upload",
+      options
+    )
+      .then((res) => res.json())
+      .then((res) => {
         this.setState({
           imageUrl: res.secure_url,
-          imageAlt: `An image of ${res.original_filename}`
-        })
+          imageAlt: `An image of ${res.original_filename}`,
+        });
       })
-      .catch(err => console.log(err));
-  }
+      .catch((err) => console.log(err));
+  };
 
   render() {
     const { imageUrl, imageAlt } = this.state;
@@ -105,7 +105,9 @@ class PostRequest extends React.Component {
                   type="text"
                   name="productname"
                   placeholder="Enter the product name"
-                  onChange={e => { this.handleInputChange(e) }}
+                  onChange={(e) => {
+                    this.handleInputChange(e);
+                  }}
                 />
               </div>
             </div>
@@ -117,24 +119,37 @@ class PostRequest extends React.Component {
                     <input type="file" />
                   </div>
 
-                  <button type="button" className="btn" onClick={this.handleImageUpload}>Submit</button>
-
+                  <button
+                    type="button"
+                    className="btn"
+                    onClick={this.handleImageUpload}
+                  >
+                    Submit
+                  </button>
                 </form>
               </section>
               <section className="right-side">
                 <p>The resulting image will be displayed here</p>
                 {imageUrl && (
-                  <img src={imageUrl} alt={imageAlt} className="displayed-image" />
+                  <img
+                    src={imageUrl}
+                    alt={imageAlt}
+                    className="displayed-image"
+                  />
                 )}
               </section>
             </main>
-
 
             <div className="field">
               <label className="label">Country</label>
               <div className="control">
                 <div className="select is-fullwidth">
-                  <select name="country" onChange={e => { this.handleInputChange(e) }}>
+                  <select
+                    name="country"
+                    onChange={(e) => {
+                      this.handleInputChange(e);
+                    }}
+                  >
                     <option>Hong Kong</option>
                     <option>Japan</option>
                     <option>Korea</option>
@@ -173,25 +188,42 @@ class PostRequest extends React.Component {
 
                 <div className="field">
                   <div className="control">
-                    <input type="checkbox" name="foodexpiry" onChange={e => { this.handleInputChange(e) }} />
-                      Does it have an  expiry of 3-5 days?
+                    <input
+                      type="checkbox"
+                      name="foodexpiry"
+                      onChange={(e) => {
+                        this.handleInputChange(e);
+                      }}
+                    />
+                    Does it have an expiry of 3-5 days?
                   </div>
 
                   <div className="control">
                     <label className="checkbox">
-                      <input type="checkbox" name="foodchilled" onChange={e => { this.handleInputChange(e) }} />
-                          Does it need to be chilled?
+                      <input
+                        type="checkbox"
+                        name="foodchilled"
+                        onChange={(e) => {
+                          this.handleInputChange(e);
+                        }}
+                      />
+                      Does it need to be chilled?
                     </label>
                   </div>
 
                   <label className="checkbox">
-                    <input type="checkbox" name="foodspecial" onChange={e => { this.handleInputChange(e) }} />
-                          Do you require special handling?
+                    <input
+                      type="checkbox"
+                      name="foodspecial"
+                      onChange={(e) => {
+                        this.handleInputChange(e);
+                      }}
+                    />
+                    Do you require special handling?
                   </label>
                 </div>
               </div>
             ) : null}
-
 
             {this.state.showcollectible ? (
               <div id="collectible">
@@ -200,18 +232,29 @@ class PostRequest extends React.Component {
 
                 <div className="control">
                   <label className="radio">
-                    <input type="radio" name="collectspecial" onChange={e => { this.handleInputChange(e) }} />
-                      Yes, it requires special handling
-                    </label>
+                    <input
+                      type="radio"
+                      name="collectspecial"
+                      onChange={(e) => {
+                        this.handleInputChange(e);
+                      }}
+                    />
+                    Yes, it requires special handling
+                  </label>
                 </div>
 
                 <label className="radio">
-                  <input type="radio" name="collectspecial" onChange={e => { this.handleInputChange(e) }} />
-                    No, the item is safe for the next-day delivery
-                  </label>
+                  <input
+                    type="radio"
+                    name="collectspecial"
+                    onChange={(e) => {
+                      this.handleInputChange(e);
+                    }}
+                  />
+                  No, the item is safe for the next-day delivery
+                </label>
                 {/* </div> */}
               </div>
-
             ) : null}
           </div>
 
@@ -224,7 +267,9 @@ class PostRequest extends React.Component {
                   type="text"
                   name="url"
                   placeholder="Enter the URL for reference"
-                  onChange={e => { this.handleInputChange(e) }}
+                  onChange={(e) => {
+                    this.handleInputChange(e);
+                  }}
                 />
               </div>
             </div>
@@ -237,7 +282,9 @@ class PostRequest extends React.Component {
                   type="text"
                   name="qty"
                   placeholder=""
-                  onChange={e => { this.handleInputChange(e) }}
+                  onChange={(e) => {
+                    this.handleInputChange(e);
+                  }}
                 />
               </p>
               <p className="control">
@@ -261,7 +308,9 @@ class PostRequest extends React.Component {
                   type="text"
                   name="price"
                   placeholder="Amount in SGD"
-                  onChange={e => { this.handleInputChange(e) }}
+                  onChange={(e) => {
+                    this.handleInputChange(e);
+                  }}
                 />
               </p>
             </div>
@@ -272,7 +321,9 @@ class PostRequest extends React.Component {
                 className="textarea has-fixed-size"
                 name="message"
                 placeholder="Please indicate colors, special handling, etc"
-                onChange={e => { this.handleInputChange(e) }}
+                onChange={(e) => {
+                  this.handleInputChange(e);
+                }}
               ></textarea>
             </div>
 
@@ -280,45 +331,57 @@ class PostRequest extends React.Component {
               <strong>Do you require a receipt? </strong>
 
               <label className="radio px-2">
-                <input type="radio" name="receipt" onChange={e => { this.handleInputChange(e) }} />
+                <input
+                  type="radio"
+                  name="receipt"
+                  onChange={(e) => {
+                    this.handleInputChange(e);
+                  }}
+                />
                 Yes
               </label>
               <label className="radio px-2">
-                <input type="radio" name="receipt" onChange={e => { this.handleInputChange(e) }} />
-
+                <input
+                  type="radio"
+                  name="receipt"
+                  onChange={(e) => {
+                    this.handleInputChange(e);
+                  }}
+                />
                 No
               </label>
             </div>
           </div>
-        </div >
+        </div>
 
         <div>
           <p className="control">
-            <Link to={{
-
-              pathname: "/PostConfirmation",
-              state: {
-                productname: this.state.productname,
-                imageurl: this.state.imageurl,
-                category: this.state.category,
-                country: this.state.country,
-                foodexpiry: this.state.foodexpiry,
-                foodchilled: this.state.foodchilled,
-                foodspecial: this.state.foodspecial,
-                collectspecial: this.state.collectspecial,
-                url: this.state.url,
-                qty: this.state.qty,
-                price: this.state.price,
-                message: this.state.message,
-                receipt: this.state.receipt
-
-              }
-            }}
-              className="button is-primary">Next</Link>
+            <Link
+              to={{
+                pathname: "/PostConfirmation",
+                state: {
+                  productname: this.state.productname,
+                  imageurl: this.state.imageurl,
+                  category: this.state.category,
+                  country: this.state.country,
+                  foodexpiry: this.state.foodexpiry,
+                  foodchilled: this.state.foodchilled,
+                  foodspecial: this.state.foodspecial,
+                  collectspecial: this.state.collectspecial,
+                  url: this.state.url,
+                  qty: this.state.qty,
+                  price: this.state.price,
+                  message: this.state.message,
+                  receipt: this.state.receipt,
+                },
+              }}
+              className="button is-primary"
+            >
+              Next
+            </Link>
           </p>
         </div>
-
-      </div >
+      </div>
     );
   }
 }

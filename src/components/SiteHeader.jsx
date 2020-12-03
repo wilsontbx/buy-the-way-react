@@ -24,15 +24,23 @@ class SiteHeader extends React.Component {
   logout(e) {
     e.preventDefault();
     this.props.cookies.remove("token");
+    this.setState({
+      username: null,
+    });
   }
   componentDidMount() {
     const token = this.props.cookies.get("token");
     if (token || !token === "undefined" || token === "null") {
-      backendService.getUserInfo(token).then((response) => {
-        this.setState({
-          username: response.data.username,
+      backendService
+        .getUserInfo(token)
+        .then((response) => {
+          this.setState({
+            username: response.data.username,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      });
     }
   }
 
