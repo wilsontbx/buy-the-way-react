@@ -3,12 +3,21 @@ import "./SiteHeader.scss";
 import backendService from "../services/backendAPI";
 import { Link, withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
+import { Modal } from "react-bulma-components";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Slide from "@material-ui/core/Slide";
 
 class SiteHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: null,
+      open: false,
     };
   }
   isAuthenticated() {
@@ -31,6 +40,14 @@ class SiteHeader extends React.Component {
       backendService
         .getUserInfo(token)
         .then((response) => {
+          if (!response.data.success) {
+            this.setState({
+              formErr:
+                "The email address and password you entered don't match.",
+            });
+            this.logout();
+            return;
+          }
           this.setState({
             username: response.data.username,
           });
@@ -54,6 +71,52 @@ class SiteHeader extends React.Component {
               alt=""
             />
           </Link>
+          <div>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleClickOpen}
+            >
+              Slide in alert dialog
+            </Button>
+            <Dialog
+              open={open}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-slide-title"
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle id="alert-dialog-slide-title">
+                {"Use Google's location service?"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-slide-description">
+                  Let Google help apps determine location. This means sending
+                  anonymous location data to Google, even when no apps are
+                  running.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Disagree
+                </Button>
+                <Button onClick={handleClose} color="primary">
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+          <div>
+            <button onClick={() => this.setState({ open: true })}>Open</button>
+            <Modal
+              show={this.state.open}
+              onClose={() => this.setState({ open: false })}
+            >
+              <div class="modal-background"></div>
+              <div class="modal-content-width">Some error occur.</div>
+            </Modal>
+          </div>
 
           <Link
             role="button"
