@@ -6,6 +6,7 @@ import Register from "./components/pages/Register";
 import GuestRoute from "./components/GuestRoute";
 import "bulma";
 import PostRequest from "./components/pages/PostRequest";
+import PreOrder from './components/pages/PreOrder'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <SiteHeader />
         <Switch>
           <Route path="/postrequest" component={PostRequest}></Route>
+          <Route path="/preorder" component={PreOrder}></Route>
           <GuestRoute path="/users/login" component={Login} />
           <GuestRoute path="/users/register" component={Register} />
           <Route path="/"></Route>

@@ -137,7 +137,7 @@ class SiteHeader extends React.Component {
               POST-REQUEST
             </Link>
 
-            <Link className="navbar-item">PRE-ORDER</Link>
+            <Link to="/preorder" className="navbar-item">PRE-ORDER</Link>
 
             <div className="navbar-item has-dropdown is-hoverable">
               <Link className="navbar-link">More Info</Link>
