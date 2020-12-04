@@ -38,6 +38,42 @@ const backendAPI = {
       })
     );
   },
+  create: (
+    productname,
+    imageUrl,
+    country,
+    category,
+    foodexpiry,
+    foodchilled,
+    foodspecial,
+    collectspecial,
+    url,
+    qty,
+    price,
+    message,
+    receipt,
+    email
+  ) => {
+    return axiosInstance.post(
+      "/products/create",
+      qs.stringify({
+        productname: productname,
+        imageUrl: imageUrl,
+        country: country,
+        category: category,
+        foodexpiry: foodexpiry,
+        foodchilled: foodchilled,
+        foodspecial: foodspecial,
+        collectspecial: collectspecial,
+        url: url,
+        qty: qty,
+        price: price,
+        message: message,
+        receipt: receipt,
+        email: email,
+      })
+    );
+  },
 };
 
 export default backendAPI;

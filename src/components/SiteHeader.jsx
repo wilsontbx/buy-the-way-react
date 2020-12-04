@@ -1,9 +1,6 @@
 import React from "react";
 import "./SiteHeader.scss";
 import backendService from "../services/backendAPI";
-// import { Button } from "react-bulma-components";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Link, withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 

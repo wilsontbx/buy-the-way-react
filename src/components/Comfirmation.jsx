@@ -1,65 +1,72 @@
 import React from "react";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableRow from "@material-ui/core/TableRow";
 
 class Confirmation extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      productname: null,
-      category: null,
-      showfood: false,
-      showcollectible: false,
-      imageurl: null,
-      country: null,
-      foodexpiry: null,
-      foodchilled: null,
-      foodspecial: null,
-      collectspecial: null,
-      collectnextday: null,
-      url: null,
-      qty: null,
-      price: null,
-      message: null,
-      receipt: null,
-    };
-  }
-
-  componentDidMount() {
-    // check if this.state.test !==""
-  }
-
   render() {
+    const {
+      productname,
+      imageUrl,
+      imageAlt,
+      country,
+      qty,
+      price,
+      message,
+    } = this.props.item;
     return (
-      <div className="container mt-5 ml-5">
-        <div className="card">
-          <div className="card-header">
-            <div className="card-header-title"> Confirmation </div>
-          </div>
-          <div className="columns is-centered">
-            <div className="column is-narrow">
-              <table className="table mt-5">
-                <tbody>
-                  {Object.keys(this.state).map((item, idx) => {
-                    if (
-                      Object.values(this.state)[idx] !== null &&
-                      Object.values(this.state)[idx]
-                    ) {
-                      return (
-                        <tr>
-                          <td className="has-text-weight-bold"> {item}: </td>
-                          <td> {Object.values(this.state)[idx]}</td>
-                        </tr>
-                      );
-                    }
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
+      <div>
+        <Grid container spacing={5}>
+          <Grid item xs={12} sm={5}>
+            <figure>
+              <img src={imageUrl} alt={imageAlt} className="displayed-image" />
+            </figure>
+          </Grid>
+          <Grid item xs={12} sm={7}>
+            <Typography variant="h5" gutterBottom>
+              <Box fontWeight="fontWeightBold">{productname}</Box>
+              <Box fontWeight="fontWeightLight" m={2}>
+                Purchase from:
+              </Box>
+              <Box fontWeight="fontWeightBold" m={2}>
+                {country}
+              </Box>
+              <Box fontWeight="fontWeightLight" m={2}>
+                Quantity:
+              </Box>
 
-          <button className="button is-primary has-text-right">Confirm</button>
-          <button className="button is-danger"> Back</button>
-        </div>
+              <Box fontWeight="fontWeightBold" m={2}>
+                {qty}
+              </Box>
+              <Box fontWeight="fontWeightLight" m={2}>
+                {message === "" ? "-" : message}
+              </Box>
+            </Typography>
+          </Grid>
+        </Grid>
+        <TableContainer>
+          <Table aria-label="simple table">
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Typography variant="h5" gutterBottom>
+                    <Box fontWeight="fontWeightBold">Total Price</Box>
+                  </Typography>
+                </TableCell>
+                <TableCell align="right">
+                  <Typography variant="h5" gutterBottom>
+                    <Box fontWeight="fontWeightBold">S${price}</Box>
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     );
   }

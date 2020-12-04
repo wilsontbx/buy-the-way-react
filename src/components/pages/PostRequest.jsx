@@ -1,389 +1,354 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import Product from "../Product";
+import TransactionRequest from "../TransactionRequest";
+import Confirmation from "../Comfirmation";
+import backendService from "../../services/backendAPI";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import Brightness1OutlinedIcon from "@material-ui/icons/Brightness1Outlined";
+import CheckCircleRoundedIcon from "@material-ui/icons/CheckCircleRounded";
+import { withRouter } from "react-router-dom";
+import { withCookies } from "react-cookie";
 import "./PostRequest.scss";
 
-// const cloudinaryCore = new cloudinary.Cloudinary({ cloud_name: 'demo' });
-// const SampleImg = () => (
-//   <img src={cloudinaryCore.url('sample')} />
-// );
-
+const product = ["productname", "imageUrl", "country", "category"];
+const transaction = ["qty", "price"];
 class PostRequest extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: null,
-      showfood: false,
-      showcollectible: false,
-      productname: null,
-      imageUrl: null,
-      imageAlt: null,
-      country: null,
-      foodexpiry: null,
-      foodchilled: null,
-      foodspecial: null,
-      collectspecial: null,
-      url: null,
-      qty: null,
-      price: null,
-      message: null,
-      receipt: null,
+      productname: "",
+      imageUrl: "",
+      imageAlt: "",
+      country: "",
+      category: "",
+      foodexpiry: true,
+      foodchilled: true,
+      foodspecial: true,
+      collectspecial: "no",
+      url: "",
+      qty: "",
+      price: "",
+      message: "",
+      receipt: "no",
+      step: 1,
+      submitCheck: "",
+      formErr: {
+        productname: "",
+        imageUrl: "",
+        country: "",
+        category: "",
+        qty: "",
+        price: "",
+      },
+      fieldName: {
+        productname: "Product name",
+        imageUrl: "Product image",
+        country: "Country of purchase",
+        category: "Category of the product",
+        qty: "Quantity",
+        price: "Price",
+      },
     };
   }
+  setCurrentState(e) {
+    const state = {};
+    this.setState({ ...state, [e.target.name]: e.target.value });
+  }
 
-  categoryChange(e) {
-    this.setState({
-      category: e.target.value,
-    });
-    if (e.target.value === "Food") {
+  setImage(e) {
+    this.setState(e);
+  }
+
+  setCheckedBox(e) {
+    const state = {};
+    this.setState({ ...state, [e.target.name]: e.target.checked });
+  }
+
+  setForm(e, value) {
+    let step = this.state.step;
+    let error = this.state.formErr;
+    let field = this.state.fieldName;
+    let msg = false;
+    if (step === 1) {
+      for (let i = 0; i < product.length; i++) {
+        if (this.state[product[i]] === "") {
+          error[product[i]] = field[product[i]] + " is required";
+          msg = true;
+        } else {
+          error[product[i]] = "";
+        }
+      }
+    } else if (step === 2) {
+      for (let i = 0; i < transaction.length; i++) {
+        if (this.state[transaction[i]] === "") {
+          error[transaction[i]] = field[transaction[i]] + " is required";
+          msg = true;
+        } else if (this.state[transaction[i]] < 1) {
+          error[transaction[i]] = field[transaction[i]] + " must at least 1";
+          msg = true;
+        } else {
+          error[transaction[i]] = "";
+        }
+      }
+    }
+    if (msg) {
       this.setState({
-        showfood: true,
-        showcollectible: false,
-      });
-    } else if (e.target.value === "Collectible") {
-      this.setState({
-        showfood: false,
-        showcollectible: true,
+        formErr: error,
       });
     } else {
       this.setState({
-        showcollectible: false,
-        showfood: false,
+        step: step + value,
       });
     }
   }
-  handleInputChange(e) {
-    const state = {};
-    state[e.target.name] = e.target.value;
-    this.setState(state);
+
+  handleFormSubmission(e) {
+    e.preventDefault();
+    const {
+      productname,
+      imageUrl,
+      country,
+      category,
+      foodexpiry,
+      foodchilled,
+      foodspecial,
+      collectspecial,
+      url,
+      qty,
+      price,
+      message,
+      receipt,
+    } = this.state;
+    const token = this.props.cookies.get("token");
+    if (token || !token === "undefined" || token === "null") {
+      backendService
+        .getUserInfo(token)
+        .then((response) => {
+          if (!response.data.success) {
+            this.setState({
+              submitCheck: "Please login or register!",
+            });
+            return;
+          }
+          const email = response.data.email;
+          backendService
+            .create(
+              productname,
+              imageUrl,
+              country,
+              category,
+              foodexpiry,
+              foodchilled,
+              foodspecial,
+              collectspecial,
+              url,
+              qty,
+              price,
+              message,
+              receipt,
+              email
+            )
+            .then((response) => {
+              if (!response.data.success) {
+                this.setState({
+                  submitCheck: "Some important item were invalid",
+                });
+                return;
+              }
+              console.log(response);
+              this.props.history.push("/");
+            })
+            .catch((err) => {
+              this.setState({
+                submitCheck: "Error occurred in form, please check values",
+              });
+            });
+        })
+        .catch((err) => {
+          this.setState({
+            submitCheck: "Please login or register!",
+          });
+        });
+    }
   }
 
-  // handle image upload to cloudinary via endpoint
-
-  handleImageUpload = () => {
-    const { files } = document.querySelector('input[type="file"]');
-    console.log("Image file", files[0]);
-
-    const formData = new FormData();
-    formData.append("file", files[0]);
-    // replace this with your upload preset name
-    formData.append("upload_preset", "ml_default");
-    const options = {
-      method: "POST",
-      body: formData,
-    };
-
-    // replace cloudname with your Cloudinary cloud_name
-    return fetch(
-      "https://api.Cloudinary.com/v1_1/duc6i2tt0/image/upload",
-      options
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        this.setState({
-          imageUrl: res.secure_url,
-          imageAlt: `An image of ${res.original_filename}`,
-        });
-      })
-      .catch((err) => console.log(err));
-  };
-
   render() {
-    const { imageUrl, imageAlt } = this.state;
+    let errMsg = [];
+    let objectKeys = Object.keys(this.state.formErr);
+    objectKeys.forEach((item) => {
+      errMsg.push(<h6>{this.state.formErr[item]}</h6>);
+    });
 
     return (
-      <div className="container">
-        <h2 className="title mt-2">
-          <strong>Post Request</strong>
-        </h2>
-        <div className="columns">
-          <div className="column">
-            <div className="field">
-              <label className="label">Product name</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  name="productname"
-                  placeholder="Enter the product name"
-                  onChange={(e) => {
-                    this.handleInputChange(e);
-                  }}
-                />
-              </div>
-            </div>
-
-            <main className="App">
-              <section className="left-side">
-                <form>
-                  <div className="form-group">
-                    <input type="file" />
-                  </div>
-
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={this.handleImageUpload}
-                  >
-                    Submit
-                  </button>
-                </form>
-              </section>
-              <section className="right-side">
-                <p>The resulting image will be displayed here</p>
-                {imageUrl && (
-                  <img
-                    src={imageUrl}
-                    alt={imageAlt}
-                    className="displayed-image"
-                  />
-                )}
-              </section>
-            </main>
-
-            <div className="field">
-              <label className="label">Country</label>
-              <div className="control">
-                <div className="select is-fullwidth">
-                  <select
-                    name="country"
-                    onChange={(e) => {
-                      this.handleInputChange(e);
-                    }}
-                  >
-                    <option>Hong Kong</option>
-                    <option>Japan</option>
-                    <option>Korea</option>
-                  </select>
-                </div>
-              </div>
-              <p className="help is-black is-italic">
-                Current available country is Hong Kong only
-              </p>
-            </div>
-
-            <div className="field">
-              <label className="label">Category</label>
-              <div className="control">
-                <div className="select is-fullwidth">
-                  <select
-                    onChange={(e) => {
-                      this.categoryChange(e);
-                    }}
-                    id="category"
-                    name="category"
-                  >
-                    <option value="Select">Select dropdown</option>
-                    <option value="Food">Food</option>
-                    <option value="Collectible">Collectible item</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {this.state.showfood ? (
-              <div id="food">
-                <label className="label">
-                  What is the nature of the product
-                </label>
-
-                <div className="field">
-                  <div className="control">
-                    <input
-                      type="checkbox"
-                      name="foodexpiry"
-                      onChange={(e) => {
-                        this.handleInputChange(e);
-                      }}
-                    />
-                    Does it have an expiry of 3-5 days?
-                  </div>
-
-                  <div className="control">
-                    <label className="checkbox">
-                      <input
-                        type="checkbox"
-                        name="foodchilled"
-                        onChange={(e) => {
-                          this.handleInputChange(e);
-                        }}
-                      />
-                      Does it need to be chilled?
-                    </label>
-                  </div>
-
-                  <label className="checkbox">
-                    <input
-                      type="checkbox"
-                      name="foodspecial"
-                      onChange={(e) => {
-                        this.handleInputChange(e);
-                      }}
-                    />
-                    Do you require special handling?
-                  </label>
-                </div>
-              </div>
-            ) : null}
-
-            {this.state.showcollectible ? (
-              <div id="collectible">
-                <label className="label">Is this item fragile?</label>
-                {/* <div className="field"> */}
-
-                <div className="control">
-                  <label className="radio">
-                    <input
-                      type="radio"
-                      name="collectspecial"
-                      onChange={(e) => {
-                        this.handleInputChange(e);
-                      }}
-                    />
-                    Yes, it requires special handling
-                  </label>
-                </div>
-
-                <label className="radio">
-                  <input
-                    type="radio"
-                    name="collectspecial"
-                    onChange={(e) => {
-                      this.handleInputChange(e);
-                    }}
-                  />
-                  No, the item is safe for the next-day delivery
-                </label>
-                {/* </div> */}
-              </div>
-            ) : null}
-          </div>
-
-          <div className="column is-offset-1">
-            <div className="field">
-              <label className="label">Product reference link (optional)</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  name="url"
-                  placeholder="Enter the URL for reference"
-                  onChange={(e) => {
-                    this.handleInputChange(e);
-                  }}
-                />
-              </div>
-            </div>
-
-            <label className="label">Qty of purchase</label>
-            <div className="field has-addons">
-              <p className="control is-expanded">
-                <input
-                  className="input"
-                  type="text"
-                  name="qty"
-                  placeholder=""
-                  onChange={(e) => {
-                    this.handleInputChange(e);
-                  }}
-                />
-              </p>
-              <p className="control">
-                <span className="select">
-                  <select>
-                    <option>pc</option>
-                    <option>box</option>
-                  </select>
-                </span>
-              </p>
-            </div>
-
-            <label className="label">Transaction Price</label>
-            <div className="field has-addons">
-              <p className="control">
-                <a className="button is-static">S$</a>
-              </p>
-              <p className="control is-expanded">
-                <input
-                  className="input"
-                  type="text"
-                  name="price"
-                  placeholder="Amount in SGD"
-                  onChange={(e) => {
-                    this.handleInputChange(e);
-                  }}
-                />
-              </p>
-            </div>
-
-            <label className="label">Message</label>
-            <div className="control mb-2">
-              <textarea
-                className="textarea has-fixed-size"
-                name="message"
-                placeholder="Please indicate colors, special handling, etc"
-                onChange={(e) => {
-                  this.handleInputChange(e);
-                }}
-              ></textarea>
-            </div>
-
-            <div className="control">
-              <strong>Do you require a receipt? </strong>
-
-              <label className="radio px-2">
-                <input
-                  type="radio"
-                  name="receipt"
-                  onChange={(e) => {
-                    this.handleInputChange(e);
-                  }}
-                />
-                Yes
-              </label>
-              <label className="radio px-2">
-                <input
-                  type="radio"
-                  name="receipt"
-                  onChange={(e) => {
-                    this.handleInputChange(e);
-                  }}
-                />
-                No
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <p className="control">
-            <Link
-              to={{
-                pathname: "/PostConfirmation",
-                state: {
-                  productname: this.state.productname,
-                  imageurl: this.state.imageurl,
-                  category: this.state.category,
-                  country: this.state.country,
-                  foodexpiry: this.state.foodexpiry,
-                  foodchilled: this.state.foodchilled,
-                  foodspecial: this.state.foodspecial,
-                  collectspecial: this.state.collectspecial,
-                  url: this.state.url,
-                  qty: this.state.qty,
-                  price: this.state.price,
-                  message: this.state.message,
-                  receipt: this.state.receipt,
-                },
+      <div className="container mt-5">
+        <Grid container spacing={10}>
+          <Grid item xs={12} sm={5} className="steper">
+            <Typography variant="h3" gutterBottom>
+              <ShoppingCartIcon fontSize="large" />
+              Post Request
+            </Typography>
+            <ul className="steps is-vertical">
+              <li>
+                <Grid container spacing={0}>
+                  <Grid item xs={12} sm={1}>
+                    {this.state.step === 1 ? (
+                      <Brightness1OutlinedIcon fontSize="large" />
+                    ) : (
+                      <CheckCircleRoundedIcon fontSize="large" />
+                    )}
+                  </Grid>
+                  <Grid item xs={12} sm={11}>
+                    <p className="is-size-3">Product Details</p>
+                    <p>
+                      Let us know what product you want to buy from overseas!
+                    </p>
+                  </Grid>
+                </Grid>
+              </li>
+              <li>
+                <Grid container spacing={0}>
+                  <Grid item xs={12} sm={1}>
+                    {this.state.step < 3 ? (
+                      <Brightness1OutlinedIcon fontSize="large" />
+                    ) : (
+                      <CheckCircleRoundedIcon fontSize="large" />
+                    )}
+                  </Grid>
+                  <Grid item xs={12} sm={11}>
+                    <p className="is-size-3">Request Details</p>
+                    <p>
+                      Amount willing to pay to traveller, product infomation,
+                      quantity and note to your travellers
+                    </p>
+                  </Grid>
+                </Grid>
+              </li>
+              <li>
+                <Grid container spacing={0}>
+                  <Grid item xs={12} sm={1}>
+                    {this.state.step === 3 ? (
+                      <CheckCircleRoundedIcon fontSize="large" />
+                    ) : (
+                      <Brightness1OutlinedIcon fontSize="large" />
+                    )}
+                  </Grid>
+                  <Grid item xs={12} sm={11}>
+                    <p className="is-size-3">Confirmation</p>
+                    <p>
+                      Confirm your details of your request and publish so our
+                      travellers can offer your help!
+                    </p>
+                  </Grid>
+                </Grid>
+              </li>
+            </ul>
+          </Grid>
+          <Grid item xs={12} sm={7}>
+            <form
+              onSubmit={(e) => {
+                this.handleFormSubmission(e);
               }}
-              className="button is-primary"
             >
-              Next
-            </Link>
-          </p>
-        </div>
+              <p>STEP {this.state.step} OF 3</p>
+              {this.state.step === 1 ? (
+                <div>
+                  <Typography variant="h5" gutterBottom>
+                    Product Details
+                  </Typography>
+                  {errMsg}
+                  <Product
+                    setCurrentState={(e) => {
+                      this.setCurrentState(e);
+                    }}
+                    setImage={(e) => {
+                      this.setImage(e);
+                    }}
+                    setCheckedBox={(e) => {
+                      this.setCheckedBox(e);
+                    }}
+                    item={this.state}
+                  />
+                </div>
+              ) : this.state.step === 2 ? (
+                <div>
+                  <Typography variant="h5" gutterBottom>
+                    Request Details
+                  </Typography>
+                  {errMsg}
+                  <TransactionRequest
+                    setCurrentState={(e) => {
+                      this.setCurrentState(e);
+                    }}
+                    item={this.state}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <Typography variant="h5" gutterBottom>
+                    Confirmation
+                  </Typography>
+                  {errMsg}
+                  <Confirmation item={this.state} />
+                </div>
+              )}
+              <div className="field is-grouped is-grouped-right">
+                {this.state.step === 1 ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={(e) => {
+                      this.setForm(e, 1);
+                    }}
+                  >
+                    Next
+                  </Button>
+                ) : this.state.step > 2 ? (
+                  <div>
+                    {this.state.submitCheck}
+                    <Button
+                      variant="contained"
+                      onClick={(e) => {
+                        this.setForm(e, -1);
+                      }}
+                    >
+                      Back
+                    </Button>
+                    <Button type="submit" variant="contained" color="primary">
+                      Submit
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <Button
+                      variant="contained"
+                      onClick={(e) => {
+                        this.setForm(e, -1);
+                      }}
+                    >
+                      Back
+                    </Button>
+
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={(e) => {
+                        this.setForm(e, 1);
+                      }}
+                    >
+                      Next
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </form>
+          </Grid>
+        </Grid>
       </div>
     );
   }
 }
 
-export default PostRequest;
+export default withCookies(withRouter(PostRequest));
