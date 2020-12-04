@@ -25,16 +25,21 @@ class Login extends React.Component {
       showPassword: false,
     };
   }
-  handleEmailChange(e) {
-    this.setState({
-      email: e.target.value,
-    });
-  }
+  // handleEmailChange(e) {
+  //   this.setState({
+  //     email: e.target.value,
+  //   });
+  // }
 
-  handlePasswrdChange(e) {
-    this.setState({
-      password: e.target.value,
-    });
+  // handlePasswrdChange(e) {
+  //   this.setState({
+  //     password: e.target.value,
+  //   });
+  // }
+
+  setCurrentState(e) {
+    const state = {};
+    this.setState({ ...state, [e.target.name]: e.target.value });
   }
 
   handleClickShowPassword(e) {
@@ -88,10 +93,11 @@ class Login extends React.Component {
                 <TextField
                   id="standard-basic"
                   type="email"
+                  name="email"
                   label="Email"
                   placeholder="example@email.com"
                   onChange={(e) => {
-                    this.handleEmailChange(e);
+                    this.setCurrentState(e);
                   }}
                 />
               </FormControl>
@@ -106,8 +112,9 @@ class Login extends React.Component {
                 placeholder="••••••••"
                 type={this.state.showPassword ? "text" : "password"}
                 value={this.state.password}
+                name="password"
                 onChange={(e) => {
-                  this.handlePasswrdChange(e);
+                  this.setCurrentState(e);
                 }}
                 endAdornment={
                   <InputAdornment position="end">

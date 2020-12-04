@@ -26,6 +26,7 @@ class Product extends React.Component {
       method: "POST",
       body: formData,
     };
+    console.log(this.props);
 
     // replace cloudname with your Cloudinary cloud_name
     return fetch(
@@ -42,13 +43,24 @@ class Product extends React.Component {
       .catch((err) => console.log(err));
   };
   render() {
-    const { imageUrl, imageAlt } = this.props.item;
+    const {
+      productname,
+      imageUrl,
+      imageAlt,
+      country,
+      category,
+      foodexpiry,
+      foodchilled,
+      foodspecial,
+      collectspecial,
+    } = this.props.item;
     return (
       <div>
         <FormControl fullWidth>
           <TextField
             id="standard-basic"
             type="text"
+            value={productname}
             name="productname"
             label="Product Name"
             placeholder="Enter the product name"
@@ -93,7 +105,7 @@ class Product extends React.Component {
           <InputLabel>Country</InputLabel>
           <Select
             name="country"
-            value={this.props.item.country}
+            value={country}
             onChange={(e) => {
               this.props.setCurrentState(e);
             }}
@@ -111,6 +123,7 @@ class Product extends React.Component {
           <InputLabel>Category</InputLabel>
           <Select
             name="category"
+            value={category}
             onChange={(e) => {
               this.props.setCurrentState(e);
             }}
@@ -129,7 +142,7 @@ class Product extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={this.props.item.foodexpiry}
+                  checked={foodexpiry}
                   onChange={(e) => {
                     this.props.setCheckedBox(e);
                   }}
@@ -142,7 +155,7 @@ class Product extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={this.props.item.foodchilled}
+                  checked={foodchilled}
                   onChange={(e) => {
                     this.props.setCheckedBox(e);
                   }}
@@ -155,7 +168,7 @@ class Product extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={this.props.item.foodspecial}
+                  checked={foodspecial}
                   onChange={(e) => {
                     this.props.setCheckedBox(e);
                   }}
@@ -171,7 +184,7 @@ class Product extends React.Component {
             <FormLabel component="legend">Is this item fragile?</FormLabel>
             <RadioGroup
               name="collectspecial"
-              value={this.props.item.collectspecial}
+              value={collectspecial}
               onChange={(e) => {
                 this.props.setCurrentState(e);
               }}

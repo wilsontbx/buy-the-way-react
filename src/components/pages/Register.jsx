@@ -29,34 +29,39 @@ class Register extends React.Component {
     };
   }
 
-  handleFirstnameChange(e) {
-    this.setState({
-      firstname: e.target.value,
-    });
-  }
+  // handleFirstnameChange(e) {
+  //   this.setState({
+  //     firstname: e.target.value,
+  //   });
+  // }
 
-  handleLastnameChange(e) {
-    this.setState({
-      lastname: e.target.value,
-    });
-  }
+  // handleLastnameChange(e) {
+  //   this.setState({
+  //     lastname: e.target.value,
+  //   });
+  // }
 
-  handleUsernameChange(e) {
-    this.setState({
-      username: e.target.value,
-    });
-  }
+  // handleUsernameChange(e) {
+  //   this.setState({
+  //     username: e.target.value,
+  //   });
+  // }
 
-  handleEmailChange(e) {
-    this.setState({
-      email: e.target.value,
-    });
-  }
+  // handleEmailChange(e) {
+  //   this.setState({
+  //     email: e.target.value,
+  //   });
+  // }
 
-  handlePasswrdChange(e) {
-    this.setState({
-      password: e.target.value,
-    });
+  // handlePasswrdChange(e) {
+  //   this.setState({
+  //     password: e.target.value,
+  //   });
+  // }
+
+  setCurrentState(e) {
+    const state = {};
+    this.setState({ ...state, [e.target.name]: e.target.value });
   }
 
   handleClickShowPassword(e) {
@@ -131,9 +136,10 @@ class Register extends React.Component {
                   <TextField
                     id="standard-basic"
                     type="text"
+                    name="firstname"
                     label="First name"
                     onChange={(e) => {
-                      this.handleFirstnameChange(e);
+                      this.setCurrentState(e);
                     }}
                   />
                 </FormControl>
@@ -143,9 +149,10 @@ class Register extends React.Component {
                   <TextField
                     id="standard-basic"
                     type="text"
+                    name="lastname"
                     label="Last name"
                     onChange={(e) => {
-                      this.handleLastnameChange(e);
+                      this.setCurrentState(e);
                     }}
                   />
                 </FormControl>
@@ -156,9 +163,10 @@ class Register extends React.Component {
                 <TextField
                   id="standard-basic"
                   type="text"
+                  name="username"
                   label="Username"
                   onChange={(e) => {
-                    this.handleUsernameChange(e);
+                    this.setCurrentState(e);
                   }}
                 />
               </FormControl>
@@ -168,10 +176,11 @@ class Register extends React.Component {
                 <TextField
                   id="standard-basic"
                   type="email"
+                  name="email"
                   label="Email"
                   placeholder="example@email.com"
                   onChange={(e) => {
-                    this.handleEmailChange(e);
+                    this.setCurrentState(e);
                   }}
                 />
               </FormControl>
@@ -184,10 +193,11 @@ class Register extends React.Component {
               <Input
                 id="standard-adornment-password"
                 placeholder="••••••••"
+                name="password"
                 type={this.state.showPassword ? "text" : "password"}
                 value={this.state.password}
                 onChange={(e) => {
-                  this.handlePasswrdChange(e);
+                  this.setCurrentState(e);
                 }}
                 endAdornment={
                   <InputAdornment position="end">

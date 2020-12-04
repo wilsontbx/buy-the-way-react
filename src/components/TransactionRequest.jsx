@@ -11,6 +11,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 
 class TransactionRequest extends React.Component {
   render() {
+    const { url, qty, price, message, receipt } = this.props.item;
     return (
       <div>
         <FormControl fullWidth>
@@ -18,6 +19,7 @@ class TransactionRequest extends React.Component {
             id="standard-basic"
             type="text"
             label="Product reference link (optional)"
+            value={url}
             name="url"
             placeholder="Enter the URL for reference"
             onChange={(e) => {
@@ -31,9 +33,12 @@ class TransactionRequest extends React.Component {
             id="standard-basic"
             type="number"
             label="Quantity"
+            value={qty}
             name="qty"
             onChange={(e) => {
-              this.props.setCurrentState(e);
+              e.target.value < 0
+                ? (e.target.value = "")
+                : this.props.setCurrentState(e);
             }}
           />
         </FormControl>
@@ -46,8 +51,11 @@ class TransactionRequest extends React.Component {
             id="outlined-adornment-amount"
             type="number"
             name="price"
+            value={price}
             onChange={(e) => {
-              this.props.setCurrentState(e);
+              e.target.value < 0
+                ? (e.target.value = "")
+                : this.props.setCurrentState(e);
             }}
             startAdornment={
               <InputAdornment position="start">S$</InputAdornment>
@@ -60,10 +68,14 @@ class TransactionRequest extends React.Component {
           fullWidth
           id="outlined-multiline-static"
           label="Message"
+          value={message}
           name="message"
           multiline
           placeholder="Please indicate colors, special handling, etc"
           rows={4}
+          onChange={(e) => {
+            this.props.setCurrentState(e);
+          }}
           variant="outlined"
         />
 
@@ -71,7 +83,7 @@ class TransactionRequest extends React.Component {
           <FormLabel component="legend">Do you require a receipt?</FormLabel>
           <RadioGroup
             name="receipt"
-            value={this.props.item.receipt}
+            value={receipt}
             onChange={(e) => {
               this.props.setCurrentState(e);
             }}
