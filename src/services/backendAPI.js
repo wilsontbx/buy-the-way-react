@@ -74,6 +74,14 @@ const backendAPI = {
       })
     );
   },
+  search: (keyword) => {
+    return axiosInstance.post(
+      "/products/search",
+      qs.stringify({
+        keyword: keyword,
+      })
+    );
+  },
 };
 
 export default backendAPI;

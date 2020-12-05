@@ -9,6 +9,7 @@ class SiteHeader extends React.Component {
     super(props);
     this.state = {
       username: null,
+      open: false,
     };
   }
   isAuthenticated() {
@@ -31,6 +32,14 @@ class SiteHeader extends React.Component {
       backendService
         .getUserInfo(token)
         .then((response) => {
+          if (!response.data.success) {
+            this.setState({
+              formErr:
+                "The email address and password you entered don't match.",
+            });
+            this.logout();
+            return;
+          }
           this.setState({
             username: response.data.username,
           });
@@ -74,7 +83,9 @@ class SiteHeader extends React.Component {
               POST-REQUEST
             </Link>
 
-            <Link className="navbar-item">PRE-ORDER</Link>
+            <Link to="/preorder" className="navbar-item">
+              PRE-ORDER
+            </Link>
 
             <div className="navbar-item has-dropdown is-hoverable">
               <Link className="navbar-link">More Info</Link>

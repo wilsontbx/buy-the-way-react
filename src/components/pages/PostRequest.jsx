@@ -28,6 +28,15 @@ class PostRequest extends React.Component {
       foodchilled: true,
       foodspecial: true,
       collectspecial: "no",
+      existingProduct: false,
+      prePopulatedImageUrl: undefined,
+      prePopulatedImageAlt: undefined,
+      prePopulatedCountry: undefined,
+      prePopulatedCategory: undefined,
+      prePopulatedFoodexpiry: undefined,
+      prePopulatedFoodchilled: undefined,
+      prePopulatedFoodspecial: undefined,
+      prePopulatedCollectspecial: undefined,
       url: "",
       qty: "",
       price: "",
@@ -51,6 +60,7 @@ class PostRequest extends React.Component {
         qty: "Quantity",
         price: "Price",
       },
+      namelist: [],
     };
   }
   setCurrentState(e) {
@@ -68,6 +78,7 @@ class PostRequest extends React.Component {
   }
 
   setForm(e, value) {
+    e.preventDefault();
     let step = this.state.step;
     let error = this.state.formErr;
     let field = this.state.fieldName;
@@ -81,7 +92,7 @@ class PostRequest extends React.Component {
           error[product[i]] = "";
         }
       }
-    } else if (step === 2) {
+    } else if (step === 2 && value > 0) {
       for (let i = 0; i < transaction.length; i++) {
         if (this.state[transaction[i]] === "") {
           error[transaction[i]] = field[transaction[i]] + " is required";
@@ -104,6 +115,52 @@ class PostRequest extends React.Component {
       });
     }
   }
+  handleChangeAutoCom(event, value) {
+    event.preventDefault();
+    let searchResult = this.state.namelist;
+    let index = null;
+
+    for (let i = 0; i < searchResult.length; i++) {
+      if (searchResult[i].productname === value) {
+        index = i;
+      }
+    }
+
+    if (index !== null) {
+      this.setState({
+        productname: value,
+        namelist: searchResult,
+        existingProduct: true,
+        prePopulatedImageUrl: searchResult[index].imageUrl,
+        prePopulatedImageAlt: searchResult[index].imageAlt,
+        prePopulatedCountry: searchResult[index].country,
+        prePopulatedCategory: searchResult[index].category,
+        prePopulatedFoodexpiry: searchResult[index].foodexpiry,
+        prePopulatedFoodchilled: searchResult[index].foodchilled,
+        prePopulatedFoodspecial: searchResult[index].foodspecial,
+        prePopulatedCollectspecial: searchResult[index].collectspecial,
+      });
+    }
+  }
+  handleSearch(e) {
+    e.preventDefault();
+    const value = e.target.value;
+    backendService.search(value).then((response) => {
+      if (!response.data.success) {
+        return;
+      }
+      let searchResult = [];
+      if (value !== "") {
+        searchResult = response.data.result;
+      }
+      console.log(searchResult);
+
+      this.setState({
+        productname: value,
+        namelist: searchResult,
+      });
+    });
+  }
 
   handleFormSubmission(e) {
     e.preventDefault();
@@ -123,56 +180,54 @@ class PostRequest extends React.Component {
       receipt,
     } = this.state;
     const token = this.props.cookies.get("token");
-    if (token || !token === "undefined" || token === "null") {
-      backendService
-        .getUserInfo(token)
-        .then((response) => {
-          if (!response.data.success) {
-            this.setState({
-              submitCheck: "Please login or register!",
-            });
-            return;
-          }
-          const email = response.data.email;
-          backendService
-            .create(
-              productname,
-              imageUrl,
-              country,
-              category,
-              foodexpiry,
-              foodchilled,
-              foodspecial,
-              collectspecial,
-              url,
-              qty,
-              price,
-              message,
-              receipt,
-              email
-            )
-            .then((response) => {
-              if (!response.data.success) {
-                this.setState({
-                  submitCheck: "Some important item were invalid",
-                });
-                return;
-              }
-              console.log(response);
-              this.props.history.push("/");
-            })
-            .catch((err) => {
-              this.setState({
-                submitCheck: "Error occurred in form, please check values",
-              });
-            });
-        })
-        .catch((err) => {
+    backendService
+      .getUserInfo(token)
+      .then((response) => {
+        if (!response.data.success) {
           this.setState({
             submitCheck: "Please login or register!",
           });
+          return;
+        }
+        const email = response.data.email;
+        backendService
+          .create(
+            productname,
+            imageUrl,
+            country,
+            category,
+            foodexpiry,
+            foodchilled,
+            foodspecial,
+            collectspecial,
+            url,
+            qty,
+            price,
+            message,
+            receipt,
+            email
+          )
+          .then((response) => {
+            if (!response.data.success) {
+              this.setState({
+                submitCheck: "Some important item were invalid",
+              });
+              return;
+            }
+            console.log(response);
+            this.props.history.push("/");
+          })
+          .catch((err) => {
+            this.setState({
+              submitCheck: "Error occurred in form, please check values",
+            });
+          });
+      })
+      .catch((err) => {
+        this.setState({
+          submitCheck: "Please login or register!",
         });
-    }
+      });
   }
 
   render() {
@@ -185,7 +240,7 @@ class PostRequest extends React.Component {
     return (
       <div className="container mt-5">
         <Grid container spacing={10}>
-          <Grid item xs={12} sm={5} className="steper">
+          <Grid item xs={12} sm={5} className="steper" alignItems="stretch">
             <Typography variant="h3" gutterBottom>
               <ShoppingCartIcon fontSize="large" />
               Post Request
@@ -193,7 +248,7 @@ class PostRequest extends React.Component {
             <ul className="steps is-vertical">
               <li>
                 <Grid container spacing={0}>
-                  <Grid item xs={12} sm={1}>
+                  <Grid item xs={12} sm={1} className="icon">
                     {this.state.step === 1 ? (
                       <Brightness1OutlinedIcon fontSize="large" />
                     ) : (
@@ -210,7 +265,7 @@ class PostRequest extends React.Component {
               </li>
               <li>
                 <Grid container spacing={0}>
-                  <Grid item xs={12} sm={1}>
+                  <Grid item xs={12} sm={1} className="icon">
                     {this.state.step < 3 ? (
                       <Brightness1OutlinedIcon fontSize="large" />
                     ) : (
@@ -228,7 +283,7 @@ class PostRequest extends React.Component {
               </li>
               <li>
                 <Grid container spacing={0}>
-                  <Grid item xs={12} sm={1}>
+                  <Grid item xs={12} sm={1} className="icon">
                     {this.state.step === 3 ? (
                       <CheckCircleRoundedIcon fontSize="large" />
                     ) : (
@@ -263,11 +318,17 @@ class PostRequest extends React.Component {
                     setCurrentState={(e) => {
                       this.setCurrentState(e);
                     }}
+                    handleSearch={(e) => {
+                      this.handleSearch(e);
+                    }}
                     setImage={(e) => {
                       this.setImage(e);
                     }}
                     setCheckedBox={(e) => {
                       this.setCheckedBox(e);
+                    }}
+                    handleChangeAutoCom={(e, v) => {
+                      this.handleChangeAutoCom(e, v);
                     }}
                     item={this.state}
                   />
@@ -290,24 +351,13 @@ class PostRequest extends React.Component {
                   <Typography variant="h5" gutterBottom>
                     Confirmation
                   </Typography>
-                  {errMsg}
                   <Confirmation item={this.state} />
                 </div>
               )}
+              <h6>{this.state.submitCheck}</h6>
               <div className="field is-grouped is-grouped-right">
-                {this.state.step === 1 ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={(e) => {
-                      this.setForm(e, 1);
-                    }}
-                  >
-                    Next
-                  </Button>
-                ) : this.state.step > 2 ? (
+                {this.state.step === 3 ? (
                   <div>
-                    {this.state.submitCheck}
                     <Button
                       variant="contained"
                       onClick={(e) => {
@@ -316,21 +366,26 @@ class PostRequest extends React.Component {
                     >
                       Back
                     </Button>
+                    <div className="divider" />
                     <Button type="submit" variant="contained" color="primary">
                       Submit
                     </Button>
                   </div>
                 ) : (
                   <div>
-                    <Button
-                      variant="contained"
-                      onClick={(e) => {
-                        this.setForm(e, -1);
-                      }}
-                    >
-                      Back
-                    </Button>
-
+                    {this.state.step === 2 ? (
+                      <Button
+                        variant="contained"
+                        onClick={(e) => {
+                          this.setForm(e, -1);
+                        }}
+                      >
+                        Back
+                      </Button>
+                    ) : (
+                      ""
+                    )}
+                    <div className="divider" />
                     <Button
                       variant="contained"
                       color="primary"

@@ -5,8 +5,29 @@ h6 {
 
 .steper {
   background-color: #fafafa;
+  height: 750px;
 }
 
 li {
   margin: 10px;
+}
+
+.icon {
+  padding-top: 25px;
+  padding-right: 10px;
+}
+
+.field {
+  margin-top: 10px;
+}
+
+.btn-class {
+  padding: 20px;
+  margin: 10px;
+}
+
+.divider {
+  width: 10px;
+  height: auto;
+  display: inline-block;
 }
