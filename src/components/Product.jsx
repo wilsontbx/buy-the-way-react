@@ -15,12 +15,6 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import "./Product.scss";
 class Product extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      tag: "",
-    };
-  }
   // handle image upload to cloudinary via endpoint
 
   handleImageUpload = () => {
@@ -72,7 +66,7 @@ class Product extends React.Component {
           disabled={existingProduct ? true : false}
           options={namelist.map((item) => item.productname)}
           className="field"
-          freeSolo={true}
+          freeSolo
           onChange={this.props.handleChangeAutoCom}
           renderInput={(params) => (
             <TextField
@@ -114,7 +108,7 @@ class Product extends React.Component {
               <figure className="image is-128x128">
                 <img
                   src={this?.props?.item?.prePopulatedImageUrl || imageUrl}
-                  alt={imageAlt}
+                  alt={this?.props?.item?.prePopulatedImageAlt || imageAlt}
                   className="displayed-image"
                 />
               </figure>

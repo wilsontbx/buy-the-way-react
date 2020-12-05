@@ -167,6 +167,7 @@ class PostRequest extends React.Component {
     const {
       productname,
       imageUrl,
+      imageAlt,
       country,
       category,
       foodexpiry,
@@ -178,6 +179,7 @@ class PostRequest extends React.Component {
       price,
       message,
       receipt,
+      existingProduct,
     } = this.state;
     const token = this.props.cookies.get("token");
     backendService
@@ -191,9 +193,10 @@ class PostRequest extends React.Component {
         }
         const email = response.data.email;
         backendService
-          .create(
+          .createRequest(
             productname,
             imageUrl,
+            imageAlt,
             country,
             category,
             foodexpiry,
@@ -205,6 +208,7 @@ class PostRequest extends React.Component {
             price,
             message,
             receipt,
+            existingProduct,
             email
           )
           .then((response) => {

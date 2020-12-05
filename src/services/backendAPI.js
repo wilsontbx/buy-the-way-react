@@ -33,14 +33,18 @@ const backendAPI = {
   getUserInfo: (token) => {
     return axiosInstance.post(
       "/users/getuserinfo",
-      qs.stringify({
-        token: token,
-      })
+      {},
+      {
+        headers: {
+          auth_token: token,
+        },
+      }
     );
   },
-  create: (
+  createRequest: (
     productname,
     imageUrl,
+    imageAlt,
     country,
     category,
     foodexpiry,
@@ -52,13 +56,15 @@ const backendAPI = {
     price,
     message,
     receipt,
+    existingProduct,
     email
   ) => {
     return axiosInstance.post(
-      "/products/create",
+      "/products/request/create",
       qs.stringify({
         productname: productname,
         imageUrl: imageUrl,
+        imageAlt: imageAlt,
         country: country,
         category: category,
         foodexpiry: foodexpiry,
@@ -70,6 +76,7 @@ const backendAPI = {
         price: price,
         message: message,
         receipt: receipt,
+        existingProduct: existingProduct,
         email: email,
       })
     );
