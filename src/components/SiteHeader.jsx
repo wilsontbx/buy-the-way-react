@@ -3,13 +3,15 @@ import "./SiteHeader.scss";
 import backendService from "../services/backendAPI";
 import { Link, withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
-
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 class SiteHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: null,
       open: false,
+      namelist: [],
     };
   }
   isAuthenticated() {
@@ -45,35 +47,24 @@ class SiteHeader extends React.Component {
           });
         })
         .catch((err) => {
+          this.logout();
           console.log(err);
         });
     }
   }
 
   render() {
-    let username = this.state.username;
+    const username = this.state.username;
+    const namelist = this.state.namelist;
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-          <Link to="https://bulma.io" className="navbar-item">
+          <Link to="/" id="logo">
             <img
-              src="https://bulma.io/images/bulma-logo.png"
-              width="112"
-              height="28"
+              src="https://res.cloudinary.com/duc6i2tt0/image/upload/v1607177262/128878427_401576140894283_3860951528942828977_n_jnmrh2.png"
               alt=""
+              width="100"
             />
-          </Link>
-
-          <Link
-            role="button"
-            className="navbar-burger burger"
-            aria-label="menu"
-            aria-expanded="false"
-            data-target="navbarBasicExample"
-          >
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
           </Link>
         </div>
 
@@ -100,17 +91,27 @@ class SiteHeader extends React.Component {
               </div>
             </div>
           </div>
-          <div className="field search has-addons">
-            <div className="control">
-              <input
-                className="input"
-                type="text"
-                placeholder="buy this for me"
-              />
-            </div>
-            <div className="control">
-              <Link className="button is-primary">Search</Link>
-            </div>
+
+          <div>
+            <Autocomplete
+              options={namelist.map((item) => item.productname)}
+              freeSolo
+              onChange={this.props.handleChangeAutoCom}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  margin="normal"
+                  variant="outlined"
+                  size="small"
+                  placeholder="Search"
+                  // value={productname}
+                  name="productname"
+                  onChange={(e) => {
+                    this.props.handleSearch(e);
+                  }}
+                />
+              )}
+            />
           </div>
 
           <div className="navbar-end">

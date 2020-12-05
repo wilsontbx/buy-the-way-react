@@ -1,7 +1,8 @@
 import axios from "axios";
 import qs from "qs";
 
-const baseUrl = "http://localhost:5000/api/v1";
+const baseUrl = "https://buy-the-way-app.herokuapp.com/api/v1";
+// const baseUrl = "http://localhost:5000/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -33,14 +34,18 @@ const backendAPI = {
   getUserInfo: (token) => {
     return axiosInstance.post(
       "/users/getuserinfo",
-      qs.stringify({
-        token: token,
-      })
+      {},
+      {
+        headers: {
+          auth_token: token,
+        },
+      }
     );
   },
-  create: (
+  createRequest: (
     productname,
     imageUrl,
+    imageAlt,
     country,
     category,
     foodexpiry,
@@ -52,13 +57,15 @@ const backendAPI = {
     price,
     message,
     receipt,
+    existingProduct,
     email
   ) => {
     return axiosInstance.post(
-      "/products/create",
+      "/products/request/create",
       qs.stringify({
         productname: productname,
         imageUrl: imageUrl,
+        imageAlt: imageAlt,
         country: country,
         category: category,
         foodexpiry: foodexpiry,
@@ -70,6 +77,7 @@ const backendAPI = {
         price: price,
         message: message,
         receipt: receipt,
+        existingProduct: existingProduct,
         email: email,
       })
     );
