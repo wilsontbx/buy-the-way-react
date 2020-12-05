@@ -14,7 +14,7 @@ class TransactionRequest extends React.Component {
     const { url, qty, price, message, receipt } = this.props.item;
     return (
       <div>
-        <FormControl fullWidth>
+        <FormControl fullWidth className="field">
           <TextField
             id="standard-basic"
             type="text"
@@ -28,7 +28,7 @@ class TransactionRequest extends React.Component {
           />
         </FormControl>
 
-        <FormControl fullWidth>
+        <FormControl fullWidth className="field">
           <TextField
             id="standard-basic"
             type="number"
@@ -43,7 +43,7 @@ class TransactionRequest extends React.Component {
           />
         </FormControl>
 
-        <FormControl fullWidth variant="outlined">
+        <FormControl fullWidth variant="outlined" className="field">
           <InputLabel htmlFor="outlined-adornment-amount">
             Transaction Price
           </InputLabel>
@@ -65,6 +65,7 @@ class TransactionRequest extends React.Component {
         </FormControl>
 
         <TextField
+          className="field"
           fullWidth
           id="outlined-multiline-static"
           label="Message"

@@ -12,7 +12,15 @@ import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import "./Product.scss";
 class Product extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      tag: "",
+    };
+  }
   // handle image upload to cloudinary via endpoint
 
   handleImageUpload = () => {
@@ -42,6 +50,7 @@ class Product extends React.Component {
       })
       .catch((err) => console.log(err));
   };
+
   render() {
     const {
       productname,
@@ -53,24 +62,34 @@ class Product extends React.Component {
       foodchilled,
       foodspecial,
       collectspecial,
+      existingProduct,
     } = this.props.item;
+    const namelist = this.props.item.namelist;
+
     return (
       <div>
-        <FormControl fullWidth>
-          <TextField
-            id="standard-basic"
-            type="text"
-            value={productname}
-            name="productname"
-            label="Product Name"
-            placeholder="Enter the product name"
-            onChange={(e) => {
-              this.props.setCurrentState(e);
-            }}
-          />
-        </FormControl>
-
-        <FormControl>
+        <Autocomplete
+          disabled={existingProduct ? true : false}
+          options={namelist.map((item) => item.productname)}
+          className="field"
+          freeSolo={true}
+          onChange={this.props.handleChangeAutoCom}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Product Name"
+              margin="normal"
+              variant="standard"
+              value={productname}
+              name="productname"
+              onChange={(e) => {
+                this.props.handleSearch(e);
+              }}
+              className="field"
+            />
+          )}
+        />
+        <FormControl className="field">
           <section>
             <form>
               <div className="form-group">
@@ -78,6 +97,7 @@ class Product extends React.Component {
                   variant="contained"
                   component="label"
                   size="small"
+                  disabled={existingProduct ? true : false}
                   startIcon={<CloudUploadIcon />}
                   onChange={this.handleImageUpload}
                 >
@@ -93,7 +113,7 @@ class Product extends React.Component {
             {imageUrl && (
               <figure className="image is-128x128">
                 <img
-                  src={imageUrl}
+                  src={this?.props?.item?.prePopulatedImageUrl || imageUrl}
                   alt={imageAlt}
                   className="displayed-image"
                 />
@@ -101,11 +121,13 @@ class Product extends React.Component {
             )}
           </section>
         </FormControl>
-        <FormControl fullWidth>
+
+        <FormControl fullWidth className="field">
           <InputLabel>Country</InputLabel>
           <Select
+            disabled={existingProduct ? true : false}
             name="country"
-            value={country}
+            value={this?.props?.item?.prePopulatedCountry || country}
             onChange={(e) => {
               this.props.setCurrentState(e);
             }}
@@ -119,11 +141,12 @@ class Product extends React.Component {
           </p>
         </FormControl>
 
-        <FormControl fullWidth>
+        <FormControl fullWidth className="field">
           <InputLabel>Category</InputLabel>
           <Select
+            disabled={existingProduct ? true : false}
             name="category"
-            value={category}
+            value={this?.props?.item?.prePopulatedCategory || category}
             onChange={(e) => {
               this.props.setCurrentState(e);
             }}
@@ -133,16 +156,18 @@ class Product extends React.Component {
             <MenuItem value={"Collectible"}>Collectible item</MenuItem>
           </Select>
         </FormControl>
-
         {this.props.item.category === "Food" ? (
-          <FormGroup component="fieldset">
+          <FormGroup component="fieldset" className="field">
             <FormLabel component="legend">
               What is the nature of the product
             </FormLabel>
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={foodexpiry}
+                  disabled={existingProduct ? true : false}
+                  checked={
+                    this?.props?.item?.prePopulatedFoodexpiry || foodexpiry
+                  }
                   onChange={(e) => {
                     this.props.setCheckedBox(e);
                   }}
@@ -155,7 +180,10 @@ class Product extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={foodchilled}
+                  disabled={existingProduct ? true : false}
+                  checked={
+                    this?.props?.item?.prePopulatedFoodchilled || foodchilled
+                  }
                   onChange={(e) => {
                     this.props.setCheckedBox(e);
                   }}
@@ -168,7 +196,10 @@ class Product extends React.Component {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={foodspecial}
+                  disabled={existingProduct ? true : false}
+                  checked={
+                    this?.props?.item?.prePopulatedFoodspecial || foodspecial
+                  }
                   onChange={(e) => {
                     this.props.setCheckedBox(e);
                   }}
@@ -180,21 +211,25 @@ class Product extends React.Component {
             />
           </FormGroup>
         ) : this.props.item.category === "Collectible" ? (
-          <FormControl component="fieldset">
+          <FormControl component="fieldset" className="field">
             <FormLabel component="legend">Is this item fragile?</FormLabel>
             <RadioGroup
               name="collectspecial"
-              value={collectspecial}
+              value={
+                this?.props?.item?.prePopulatedCollectspecial || collectspecial
+              }
               onChange={(e) => {
                 this.props.setCurrentState(e);
               }}
             >
               <FormControlLabel
+                disabled={existingProduct ? true : false}
                 value="yes"
                 control={<Radio />}
                 label="Yes, it requires special handling"
               />
               <FormControlLabel
+                disabled={existingProduct ? true : false}
                 value="no"
                 control={<Radio />}
                 label="No, the item is safe for the next-day delivery"
