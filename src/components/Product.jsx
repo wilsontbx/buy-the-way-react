@@ -13,6 +13,7 @@ import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import DeleteIcon from "@material-ui/icons/Delete";
 import "./Product.scss";
 class Product extends React.Component {
   // handle image upload to cloudinary via endpoint
@@ -66,7 +67,8 @@ class Product extends React.Component {
           disabled={existingProduct ? true : false}
           options={namelist.map((item) => item.productname)}
           className="field"
-          freeSolo
+          // freeSolo
+          fullWidth
           onChange={this.props.handleChangeAutoCom}
           renderInput={(params) => (
             <TextField
@@ -83,6 +85,26 @@ class Product extends React.Component {
             />
           )}
         />
+        {existingProduct ? (
+          <div className="field">
+            <p className="help is-black is-italic">
+              Do you to change to other product?
+            </p>
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<DeleteIcon />}
+              color="secondary"
+              onClick={(e) => {
+                this.props.handleRemoveExisting(e);
+              }}
+            >
+              (clear)
+            </Button>
+          </div>
+        ) : (
+          ""
+        )}
         <FormControl className="field">
           <section>
             <form>
@@ -107,8 +129,8 @@ class Product extends React.Component {
             {imageUrl && (
               <figure className="image is-128x128">
                 <img
-                  src={this?.props?.item?.prePopulatedImageUrl || imageUrl}
-                  alt={this?.props?.item?.prePopulatedImageAlt || imageAlt}
+                  src={imageUrl}
+                  alt={imageAlt}
                   className="displayed-image"
                 />
               </figure>
@@ -121,7 +143,7 @@ class Product extends React.Component {
           <Select
             disabled={existingProduct ? true : false}
             name="country"
-            value={this?.props?.item?.prePopulatedCountry || country}
+            value={country}
             onChange={(e) => {
               this.props.setCurrentState(e);
             }}
@@ -130,9 +152,9 @@ class Product extends React.Component {
             <MenuItem value={"Japan"}>Japan</MenuItem>
             <MenuItem value={"Korea"}>Korea</MenuItem>
           </Select>
-          <p className="help is-black is-italic">
+          {/* <p className="help is-black is-italic">
             Current available country is Hong Kong only
-          </p>
+          </p> */}
         </FormControl>
 
         <FormControl fullWidth className="field">
@@ -140,7 +162,7 @@ class Product extends React.Component {
           <Select
             disabled={existingProduct ? true : false}
             name="category"
-            value={this?.props?.item?.prePopulatedCategory || category}
+            value={category}
             onChange={(e) => {
               this.props.setCurrentState(e);
             }}
@@ -159,9 +181,7 @@ class Product extends React.Component {
               control={
                 <Checkbox
                   disabled={existingProduct ? true : false}
-                  checked={
-                    this?.props?.item?.prePopulatedFoodexpiry || foodexpiry
-                  }
+                  checked={foodexpiry}
                   onChange={(e) => {
                     this.props.setCheckedBox(e);
                   }}
@@ -175,9 +195,7 @@ class Product extends React.Component {
               control={
                 <Checkbox
                   disabled={existingProduct ? true : false}
-                  checked={
-                    this?.props?.item?.prePopulatedFoodchilled || foodchilled
-                  }
+                  checked={foodchilled}
                   onChange={(e) => {
                     this.props.setCheckedBox(e);
                   }}
@@ -191,9 +209,7 @@ class Product extends React.Component {
               control={
                 <Checkbox
                   disabled={existingProduct ? true : false}
-                  checked={
-                    this?.props?.item?.prePopulatedFoodspecial || foodspecial
-                  }
+                  checked={foodspecial}
                   onChange={(e) => {
                     this.props.setCheckedBox(e);
                   }}
@@ -209,9 +225,7 @@ class Product extends React.Component {
             <FormLabel component="legend">Is this item fragile?</FormLabel>
             <RadioGroup
               name="collectspecial"
-              value={
-                this?.props?.item?.prePopulatedCollectspecial || collectspecial
-              }
+              value={collectspecial}
               onChange={(e) => {
                 this.props.setCurrentState(e);
               }}

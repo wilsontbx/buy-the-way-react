@@ -29,14 +29,14 @@ class PostRequest extends React.Component {
       foodspecial: true,
       collectspecial: "no",
       existingProduct: false,
-      prePopulatedImageUrl: undefined,
-      prePopulatedImageAlt: undefined,
-      prePopulatedCountry: undefined,
-      prePopulatedCategory: undefined,
-      prePopulatedFoodexpiry: undefined,
-      prePopulatedFoodchilled: undefined,
-      prePopulatedFoodspecial: undefined,
-      prePopulatedCollectspecial: undefined,
+      // prePopulatedImageUrl: undefined,
+      // prePopulatedImageAlt: undefined,
+      // prePopulatedCountry: undefined,
+      // prePopulatedCategory: undefined,
+      // prePopulatedFoodexpiry: undefined,
+      // prePopulatedFoodchilled: undefined,
+      // prePopulatedFoodspecial: undefined,
+      // prePopulatedCollectspecial: undefined,
       url: "",
       qty: "",
       price: "",
@@ -76,7 +76,29 @@ class PostRequest extends React.Component {
     const state = {};
     this.setState({ ...state, [e.target.name]: e.target.checked });
   }
-
+  handleRemoveExisting(e) {
+    this.setState({
+      productname: "",
+      namelist: [],
+      existingProduct: false,
+      // prePopulatedImageUrl: undefined,
+      // prePopulatedImageAlt: undefined,
+      // prePopulatedCountry: undefined,
+      // prePopulatedCategory: undefined,
+      // prePopulatedFoodexpiry: undefined,
+      // prePopulatedFoodchilled: undefined,
+      // prePopulatedFoodspecial: undefined,
+      // prePopulatedCollectspecial: undefined,
+      imageUrl: "",
+      imageAlt: "",
+      country: "",
+      category: "",
+      foodexpiry: true,
+      foodchilled: true,
+      foodspecial: true,
+      collectspecial: "no",
+    });
+  }
   setForm(e, value) {
     e.preventDefault();
     let step = this.state.step;
@@ -85,7 +107,7 @@ class PostRequest extends React.Component {
     let msg = false;
     if (step === 1) {
       for (let i = 0; i < product.length; i++) {
-        if (this.state[product[i]] === "") {
+        if (this.state[product[i]] === "" || !this.state[product[i]]) {
           error[product[i]] = field[product[i]] + " is required";
           msg = true;
         } else {
@@ -94,10 +116,13 @@ class PostRequest extends React.Component {
       }
     } else if (step === 2 && value > 0) {
       for (let i = 0; i < transaction.length; i++) {
-        if (this.state[transaction[i]] === "") {
+        if (this.state[transaction[i]] === "" || !this.state[transaction[i]]) {
           error[transaction[i]] = field[transaction[i]] + " is required";
           msg = true;
-        } else if (this.state[transaction[i]] < 1) {
+        } else if (
+          this.state[transaction[i]] < 1 ||
+          !this.state[transaction[i]]
+        ) {
           error[transaction[i]] = field[transaction[i]] + " must at least 1";
           msg = true;
         } else {
@@ -116,6 +141,7 @@ class PostRequest extends React.Component {
     }
   }
   handleChangeAutoCom(event, value) {
+    console.log(value);
     event.preventDefault();
     let searchResult = this.state.namelist;
     let index = null;
@@ -131,14 +157,14 @@ class PostRequest extends React.Component {
         productname: value,
         namelist: searchResult,
         existingProduct: true,
-        prePopulatedImageUrl: searchResult[index].imageUrl,
-        prePopulatedImageAlt: searchResult[index].imageAlt,
-        prePopulatedCountry: searchResult[index].country,
-        prePopulatedCategory: searchResult[index].category,
-        prePopulatedFoodexpiry: searchResult[index].foodexpiry,
-        prePopulatedFoodchilled: searchResult[index].foodchilled,
-        prePopulatedFoodspecial: searchResult[index].foodspecial,
-        prePopulatedCollectspecial: searchResult[index].collectspecial,
+        imageUrl: searchResult[index].imageUrl,
+        imageAlt: searchResult[index].imageAlt,
+        country: searchResult[index].country,
+        category: searchResult[index].category,
+        foodexpiry: searchResult[index].foodexpiry,
+        foodchilled: searchResult[index].foodchilled,
+        foodspecial: searchResult[index].foodspecial,
+        collectspecial: searchResult[index].collectspecial,
       });
     }
   }
@@ -333,6 +359,9 @@ class PostRequest extends React.Component {
                     }}
                     handleChangeAutoCom={(e, v) => {
                       this.handleChangeAutoCom(e, v);
+                    }}
+                    handleRemoveExisting={(e) => {
+                      this.handleRemoveExisting(e);
                     }}
                     item={this.state}
                   />

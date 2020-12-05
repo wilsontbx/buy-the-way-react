@@ -47,6 +47,7 @@ class SiteHeader extends React.Component {
           });
         })
         .catch((err) => {
+          this.logout();
           console.log(err);
         });
     }
