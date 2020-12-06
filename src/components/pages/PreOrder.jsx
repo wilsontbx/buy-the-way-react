@@ -9,13 +9,14 @@ import axios from 'axios'
 
 const useStyles = makeStyles(() => ({
     root: {
-        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        background: 'linear-gradient(45deg, #3bd6c6 30%, #b3ecec 90%)',
         border: 0,
         borderRadius: 3,
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         color: 'white',
         height: 48,
         padding: '10px 30px',
+        marginTop: '40px'
 
 
     },
@@ -87,7 +88,7 @@ export default function PreOrder() {
     };
 
     const handleFormSubmission = () => {
-        backendService.preorderCreate(productname, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate,)
+        backendService.preorderCreate(productname, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate)
     }
     const classes = useStyles()
     return (
@@ -129,19 +130,12 @@ export default function PreOrder() {
                   <input accept="image/*" type="file" hidden />
                     </Button>
                 </Grid>
-                <Grid item direction="column" xs={6} className={classes.item} >
-                    <TextField
-                        required
-                        label="Image URL"
-                        id="imgURL"
-                        fullWidth
-                        value={imgURL}
-                        name="imgURL"
-                        onChange={function (e) {
-                            setImageURL(e.target.value)
-                        }}
-                    ></TextField>
-                </Grid>
+                {imgURL !== '' ? (<Grid item direction="column" xs={6} className={classes.item} >
+                    <Paper variant="outlined">
+                        <img src={imgURL} />
+                    </Paper>
+                </Grid>): ''}
+                
                 <Grid item direction="column" xs={6} className={classes.item}>
                     <InputLabel id="country" >Select Country</InputLabel>
                     <Select
@@ -268,18 +262,11 @@ export default function PreOrder() {
                                 setProductname(e.target.value)
                             }}
                         ></TextField>
-                        <TextField
-                            required
-                            label="Image URL"
-                            id="imgURL"
-                            value={imgURL}
-                            fullWidth
-                            name="imgURL"
-                            className={classes.item}
-                            onChange={function (e) {
-                                setImageURL(e.target.value)
-                            }}
-                        ></TextField>
+                        <Grid item direction="column" xs={6} className={classes.item} >
+                            <Paper variant="outlined">
+                                <img src={imgURL} />
+                            </Paper>
+                        </Grid>
                         <TextField
                             required
                             label="Country"
