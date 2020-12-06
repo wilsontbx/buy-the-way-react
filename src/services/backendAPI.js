@@ -1,8 +1,8 @@
 import axios from "axios";
 import qs from "qs";
 
-// const baseUrl = "https://buy-the-way-app.herokuapp.com/api/v1";
-const baseUrl = "http://localhost:5000/api/v1";
+const baseUrl = "https://buy-the-way-app.herokuapp.com/api/v1";
+// const baseUrl = "http://localhost:5000/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -96,7 +96,22 @@ const backendAPI = {
       })
     );
   },
+  preorderCreate: (productname, imgURL, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate) => {
 
+    return axiosInstance.post("products/preorder/create", qs.stringify({
+      productname: productname,
+      imgURL: imgURL,
+      country: country,
+      category: category,
+      foodexpiry: foodexpiry,
+      foodchilled: foodchilled,
+      foodspecial: foodspecial,
+      collectspecial: collectspecial,
+      returndate: returndate
+    }))
+
+
+  }
   getProductsList: () => {
     return axiosInstance.get("/products/list");
   },
