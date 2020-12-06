@@ -96,22 +96,32 @@ const backendAPI = {
       })
     );
   },
-  preorderCreate: (productname, imgURL, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate) => {
-
-    return axiosInstance.post("products/preorder/create", qs.stringify({
-      productname: productname,
-      imgURL: imgURL,
-      country: country,
-      category: category,
-      foodexpiry: foodexpiry,
-      foodchilled: foodchilled,
-      foodspecial: foodspecial,
-      collectspecial: collectspecial,
-      returndate: returndate
-    }))
-
-
-  }
+  preorderCreate: (
+    productname,
+    imgURL,
+    country,
+    category,
+    foodexpiry,
+    foodchilled,
+    foodspecial,
+    collectspecial,
+    returndate
+  ) => {
+    return axiosInstance.post(
+      "products/preorder/create",
+      qs.stringify({
+        productname: productname,
+        imgURL: imgURL,
+        country: country,
+        category: category,
+        foodexpiry: foodexpiry,
+        foodchilled: foodchilled,
+        foodspecial: foodspecial,
+        collectspecial: collectspecial,
+        returndate: returndate,
+      })
+    );
+  },
   getProductsList: () => {
     return axiosInstance.get("/products/list");
   },
