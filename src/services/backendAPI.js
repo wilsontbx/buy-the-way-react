@@ -91,17 +91,20 @@ const backendAPI = {
     );
   },
 
-  preorderCreate: (productname, country, category, foodexpiry, foodchilled, foodspecial, collectspecial) => {
-    
+  preorderCreate: (productname, imgURL, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate) => {
+
     return axiosInstance.post("products/preorder/create", qs.stringify({
       productname: productname,
+      imgURL: imgURL,
       country: country,
       category: category,
       foodexpiry: foodexpiry,
       foodchilled: foodchilled,
       foodspecial: foodspecial,
-      collectspecial: collectspecial
+      collectspecial: collectspecial,
+      returndate: returndate
     }))
+
 
   }
 };

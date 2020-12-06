@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid'
 import { Typography, InputLabel, Button, TextField, Dialog, Paper, Select, MenuItem } from '@material-ui/core'
 import backendService from "../../services/backendAPI";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import axios from 'axios'
+
 
 
 const useStyles = makeStyles(() => ({
@@ -45,7 +45,7 @@ export default function PreOrder() {
     const [foodchilled, setFoodChilled] = useState('Requires Chilling?')
     const [foodspecial, setFoodSpecial] = useState('Requires Special Handling?')
     const [collectspecial, setCollectSpecial] = useState('Is item Fragile?')
-    const [returndate, setReturnDate] = useState(new Date())
+    const [returndate, setReturnDate] = useState('')
     const [open, setOpen] = useState(false)
 
     // handle image upload to cloudinary via endpoint
@@ -87,8 +87,21 @@ export default function PreOrder() {
         setOpen(true);
     };
 
-    const handleFormSubmission = () => {
-        backendService.preorderCreate(productname, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate)
+    const handleFormSubmission = (e) => {
+        e.preventDefault();
+        
+        backendService.preorderCreate(productname, imgURL, country, category,  foodexpiry, foodchilled, foodspecial, collectspecial,returndate)
+            .then(res => {
+                if (res.status === 200) {
+                    setOpen(false)
+                    alert('Your pre-order has been submitted.')
+
+
+                } else {
+                    console.log('something wrong')
+                    alert('Something went wrong')
+                }
+            })
     }
     const classes = useStyles()
     return (
@@ -134,8 +147,8 @@ export default function PreOrder() {
                     <Paper variant="outlined">
                         <img src={imgURL} />
                     </Paper>
-                </Grid>): ''}
-                
+                </Grid>) : ''}
+
                 <Grid item direction="column" xs={6} className={classes.item}>
                     <InputLabel id="country" >Select Country</InputLabel>
                     <Select
@@ -321,7 +334,6 @@ export default function PreOrder() {
                             label="foodspecial"
                             id="foodspecial"
                             name="foodspecial"
-                            fullWidth
                             value={foodspecial}
                             onChange={function (e) {
                                 setFoodSpecial(e.target.value)
