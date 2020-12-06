@@ -29,6 +29,7 @@ class PostRequest extends React.Component {
       foodspecial: true,
       collectspecial: "no",
       existingProduct: false,
+      productnameautocomplete: "",
       // prePopulatedImageUrl: undefined,
       // prePopulatedImageAlt: undefined,
       // prePopulatedCountry: undefined,
@@ -97,6 +98,7 @@ class PostRequest extends React.Component {
       foodchilled: true,
       foodspecial: true,
       collectspecial: "no",
+      productnameautocomplete: "",
     });
   }
   setForm(e, value) {
@@ -141,7 +143,6 @@ class PostRequest extends React.Component {
     }
   }
   handleChangeAutoCom(event, value) {
-    console.log(value);
     event.preventDefault();
     let searchResult = this.state.namelist;
     let index = null;
@@ -155,6 +156,7 @@ class PostRequest extends React.Component {
     if (index !== null) {
       this.setState({
         productname: value,
+        productnameautocomplete: value,
         namelist: searchResult,
         existingProduct: true,
         imageUrl: searchResult[index].imageUrl,
@@ -169,7 +171,6 @@ class PostRequest extends React.Component {
     }
   }
   handleSearch(e) {
-    e.preventDefault();
     const value = e.target.value;
     backendService.search(value).then((response) => {
       if (!response.data.success) {
@@ -184,6 +185,7 @@ class PostRequest extends React.Component {
       this.setState({
         productname: value,
         namelist: searchResult,
+        productnameautocomplete: value,
       });
     });
   }
@@ -235,7 +237,8 @@ class PostRequest extends React.Component {
             message,
             receipt,
             existingProduct,
-            email
+            email,
+            token
           )
           .then((response) => {
             if (!response.data.success) {

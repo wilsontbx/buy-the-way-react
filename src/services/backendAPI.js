@@ -58,7 +58,8 @@ const backendAPI = {
     message,
     receipt,
     existingProduct,
-    email
+    email,
+    token
   ) => {
     return axiosInstance.post(
       "/products/request/create",
@@ -78,8 +79,13 @@ const backendAPI = {
         message: message,
         receipt: receipt,
         existingProduct: existingProduct,
-        email: email,
-      })
+        useremail: email,
+      }),
+      {
+        headers: {
+          auth_token: token,
+        },
+      }
     );
   },
   search: (keyword) => {
@@ -92,9 +98,8 @@ const backendAPI = {
   },
 
   getProductsList: () => {
-    return axiosInstance.get('/products/list')
+    return axiosInstance.get("/products/list");
   },
-
 };
 
 export default backendAPI;
