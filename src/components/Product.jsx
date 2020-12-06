@@ -58,6 +58,7 @@ class Product extends React.Component {
       foodspecial,
       collectspecial,
       existingProduct,
+      productnameautocomplete,
     } = this.props.item;
     const namelist = this.props.item.namelist;
 
@@ -67,8 +68,9 @@ class Product extends React.Component {
           disabled={existingProduct ? true : false}
           options={namelist.map((item) => item.productname)}
           className="field"
-          // freeSolo
+          freeSolo
           fullWidth
+          value={productnameautocomplete}
           onChange={this.props.handleChangeAutoCom}
           renderInput={(params) => (
             <TextField
