@@ -49,6 +49,7 @@ class Confirmation extends React.Component {
             </Typography>
           </Grid>
         </Grid>
+        <hr />
         <TableContainer>
           <Table aria-label="simple table">
             <TableBody>
