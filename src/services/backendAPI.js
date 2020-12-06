@@ -1,8 +1,8 @@
 import axios from "axios";
 import qs from "qs";
 
-// const baseUrl = "https://buy-the-way-app.herokuapp.com/api/v1";
-const baseUrl = "http://localhost:5000/api/v1";
+const baseUrl = "https://buy-the-way-app.herokuapp.com/api/v1";
+// const baseUrl = "http://localhost:5000/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: baseUrl,
