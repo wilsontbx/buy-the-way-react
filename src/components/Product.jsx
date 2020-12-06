@@ -68,7 +68,7 @@ class Product extends React.Component {
           disabled={existingProduct ? true : false}
           options={namelist.map((item) => item.productname)}
           className="field"
-          // freeSolo
+          freeSolo
           fullWidth
           value={productnameautocomplete}
           onChange={this.props.handleChangeAutoCom}
@@ -234,13 +234,13 @@ class Product extends React.Component {
             >
               <FormControlLabel
                 disabled={existingProduct ? true : false}
-                value="yes"
+                value={"yes"}
                 control={<Radio />}
                 label="Yes, it requires special handling"
               />
               <FormControlLabel
                 disabled={existingProduct ? true : false}
-                value="no"
+                value={"no"}
                 control={<Radio />}
                 label="No, the item is safe for the next-day delivery"
               />
