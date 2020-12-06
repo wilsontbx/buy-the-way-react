@@ -1,6 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 
+// const baseUrl = "https://buy-the-way-app.herokuapp.com/api/v1";
 const baseUrl = "http://localhost:5000/api/v1";
 
 const axiosInstance = axios.create({
@@ -18,15 +19,82 @@ const backendAPI = {
       })
     );
   },
-  register: (email, password) => {
+  register: (firstname, lastname, username, email, password) => {
     return axiosInstance.post(
-      "/users/login",
+      "/users/register",
       qs.stringify({
+        first_name: firstname,
+        last_name: lastname,
+        username: username,
         email: email,
         password: password,
       })
     );
   },
+  getUserInfo: (token) => {
+    return axiosInstance.post(
+      "/users/getuserinfo",
+      {},
+      {
+        headers: {
+          auth_token: token,
+        },
+      }
+    );
+  },
+  createRequest: (
+    productname,
+    imageUrl,
+    imageAlt,
+    country,
+    category,
+    foodexpiry,
+    foodchilled,
+    foodspecial,
+    collectspecial,
+    url,
+    qty,
+    price,
+    message,
+    receipt,
+    existingProduct,
+    email
+  ) => {
+    return axiosInstance.post(
+      "/products/request/create",
+      qs.stringify({
+        productname: productname,
+        imageUrl: imageUrl,
+        imageAlt: imageAlt,
+        country: country,
+        category: category,
+        foodexpiry: foodexpiry,
+        foodchilled: foodchilled,
+        foodspecial: foodspecial,
+        collectspecial: collectspecial,
+        url: url,
+        qty: qty,
+        price: price,
+        message: message,
+        receipt: receipt,
+        existingProduct: existingProduct,
+        email: email,
+      })
+    );
+  },
+  search: (keyword) => {
+    return axiosInstance.post(
+      "/products/search",
+      qs.stringify({
+        keyword: keyword,
+      })
+    );
+  },
+
+  getProductsList: () => {
+    return axiosInstance.get('/products/list')
+  },
+
 };
 
 export default backendAPI;

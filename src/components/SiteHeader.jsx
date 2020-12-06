@@ -1,43 +1,70 @@
 import React from "react";
 import "./SiteHeader.scss";
-import { Link } from "react-router-dom";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { withRouter } from "react-router-dom";
+import backendService from "../services/backendAPI";
+import { Link, withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
-
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 class SiteHeader extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null,
+      open: false,
+      namelist: [],
+    };
+  }
   isAuthenticated() {
     const token = this.props.cookies.get("token");
-    if (!token) {
+    if (!token || token === "undefined" || token === "null") {
       return false;
     }
     return true;
   }
+  logout(e) {
+    e.preventDefault();
+    this.props.cookies.remove("token");
+    this.setState({
+      username: null,
+    });
+  }
+  componentDidMount() {
+    const token = this.props.cookies.get("token");
+    if (token || !token === "undefined" || token === "null") {
+      backendService
+        .getUserInfo(token)
+        .then((response) => {
+          if (!response.data.success) {
+            this.setState({
+              formErr:
+                "The email address and password you entered don't match.",
+            });
+            this.logout();
+            return;
+          }
+          this.setState({
+            username: response.data.username,
+          });
+        })
+        .catch((err) => {
+          this.logout();
+          console.log(err);
+        });
+    }
+  }
 
   render() {
+    const username = this.state.username;
+    const namelist = this.state.namelist;
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-          <Link to="https://bulma.io" className="navbar-item">
+          <Link to="/" id="logo">
             <img
-              src="https://bulma.io/images/bulma-logo.png"
-              width="112"
-              height="28"
+              src="https://res.cloudinary.com/duc6i2tt0/image/upload/v1607177262/128878427_401576140894283_3860951528942828977_n_jnmrh2.png"
               alt=""
+              width="100"
             />
-          </Link>
-
-          <Link
-            role="button"
-            className="navbar-burger burger"
-            aria-label="menu"
-            aria-expanded="false"
-            data-target="navbarBasicExample"
-          >
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
           </Link>
         </div>
 
@@ -47,7 +74,9 @@ class SiteHeader extends React.Component {
               POST-REQUEST
             </Link>
 
-            <Link className="navbar-item">PRE-ORDER</Link>
+            <Link to="/preorder" className="navbar-item">
+              PRE-ORDER
+            </Link>
 
             <div className="navbar-item has-dropdown is-hoverable">
               <Link className="navbar-link">More Info</Link>
@@ -62,17 +91,27 @@ class SiteHeader extends React.Component {
               </div>
             </div>
           </div>
-          <div className="field search has-addons">
-            <div className="control">
-              <input
-                className="input"
-                type="text"
-                placeholder="buy this for me"
-              />
-            </div>
-            <div className="control">
-              <Link className="button is-primary">Search</Link>
-            </div>
+
+          <div>
+            <Autocomplete
+              options={namelist.map((item) => item.productname)}
+              freeSolo
+              onChange={this.props.handleChangeAutoCom}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  margin="normal"
+                  variant="outlined"
+                  size="small"
+                  placeholder="Search"
+                  // value={productname}
+                  name="productname"
+                  onChange={(e) => {
+                    this.props.handleSearch(e);
+                  }}
+                />
+              )}
+            />
           </div>
 
           <div className="navbar-end">
@@ -80,12 +119,20 @@ class SiteHeader extends React.Component {
               {this.isAuthenticated() ? (
                 <div className="navbar-item has-dropdown is-hoverable">
                   <Link className="navbar-link">
-                    <strong>Username</strong>
+                    <strong>{username != null ? username : ""}</strong>
                   </Link>
-                  <div className="navbar-dropdown">
+                  <div className="navbar-dropdown is-right">
                     <Link className="navbar-item">Dashboard</Link>
                     <hr className="navbar-divider" />
-                    <Link className="navbar-item">Logout</Link>
+                    <Link
+                      to="/"
+                      onClick={(e) => {
+                        this.logout(e);
+                      }}
+                      className="navbar-item"
+                    >
+                      Logout
+                    </Link>
                   </div>
                 </div>
               ) : (
