@@ -90,6 +90,20 @@ const backendAPI = {
       })
     );
   },
+
+  preorderCreate: (productname, country, category, foodexpiry, foodchilled, foodspecial, collectspecial) => {
+    console.log('connecting to backend...')
+    return axiosInstance.post("products/preorder/create", qs.stringify({
+      productname: productname,
+      country: country,
+      category: category,
+      foodexpiry: foodexpiry,
+      foodchilled: foodchilled,
+      foodspecial: foodspecial,
+      collectspecial: collectspecial
+    }))
+
+  }
 };
 
 export default backendAPI;
