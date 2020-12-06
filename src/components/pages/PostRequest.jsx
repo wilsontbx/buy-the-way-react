@@ -103,6 +103,7 @@ class PostRequest extends React.Component {
   }
   setForm(e, value) {
     e.preventDefault();
+    let productname = this.state.productname;
     let step = this.state.step;
     let error = this.state.formErr;
     let field = this.state.fieldName;
@@ -139,6 +140,7 @@ class PostRequest extends React.Component {
     } else {
       this.setState({
         step: step + value,
+        productnameautocomplete: productname,
       });
     }
   }
@@ -185,7 +187,7 @@ class PostRequest extends React.Component {
       this.setState({
         productname: value,
         namelist: searchResult,
-        productnameautocomplete: value,
+        // productnameautocomplete: value,
       });
     });
   }
