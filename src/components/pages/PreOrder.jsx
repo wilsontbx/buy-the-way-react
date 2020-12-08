@@ -102,7 +102,10 @@ const useStyles = makeStyles(() => ({
         backendService
             .getUserInfo(token)
             .then((response)=>{
-                console.log(response.data)
+                console.log(response.data.email)
+                // const email = response.data.email
+                // console.log(email)
+                setEmail(response.data.email)
                 if(!response.data.success) {
                     setLoggedIn(false)
                     alert('please register or log in before posting')
@@ -111,12 +114,13 @@ const useStyles = makeStyles(() => ({
 
                 } else {
                     setLoggedIn(true)
+                    
                 }
          
+               
 
 
-
-        backendService.preorderCreate(productname, imgURL, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate)
+        backendService.preorderCreate(productname, imgURL, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate, email)
             .then(res => {
                 if (res.status === 201) {
                     setOpen(false)

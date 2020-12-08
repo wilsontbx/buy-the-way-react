@@ -105,7 +105,8 @@ const backendAPI = {
     foodchilled,
     foodspecial,
     collectspecial,
-    returndate
+    returndate,
+    email
   ) => {
     return axiosInstance.post(
       "products/preorder/create",
@@ -119,6 +120,7 @@ const backendAPI = {
         foodspecial: foodspecial,
         collectspecial: collectspecial,
         returndate: returndate,
+        email: email
       })
     );
   },
