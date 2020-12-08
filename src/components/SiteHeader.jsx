@@ -5,13 +5,19 @@ import { Link, withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
+import parse from "autosuggest-highlight/parse";
+import match from "autosuggest-highlight/match";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
+import Button from "@material-ui/core/Button";
 class SiteHeader extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: null,
       open: false,
-      namelist: [],
+      searchlist: [],
+      searchquery: "",
     };
   }
   isAuthenticated() {
@@ -28,6 +34,37 @@ class SiteHeader extends React.Component {
       username: null,
     });
   }
+
+  handleChangeAutoCom(event, value) {
+    event.preventDefault();
+    // let searchResult = value?.productslug;
+    // this.props.history.push(`/${searchResult}`);
+  }
+  aftersearch(e) {
+    this.setState({
+      searchquery: "",
+      searchlist: [],
+    });
+  }
+  handleSearch(e) {
+    const value = e.target.value;
+    backendService.search(value).then((response) => {
+      if (!response.data.success) {
+        return;
+      }
+      let searchResult = [];
+      if (value !== "" && value !== " ") {
+        searchResult = response.data.result;
+      }
+      console.log(searchResult);
+
+      this.setState({
+        searchquery: value,
+        searchlist: searchResult,
+      });
+    });
+  }
+
   componentDidMount() {
     const token = this.props.cookies.get("token");
     if (token || !token === "undefined" || token === "null") {
@@ -55,7 +92,8 @@ class SiteHeader extends React.Component {
 
   render() {
     const username = this.state.username;
-    const namelist = this.state.namelist;
+    const searchlist = this.state.searchlist;
+    const searchquery = this.state.searchquery;
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
@@ -94,23 +132,61 @@ class SiteHeader extends React.Component {
 
           <div>
             <Autocomplete
-              options={namelist.map((item) => item.productname)}
+              style={{ width: 300 }}
+              options={searchlist}
+              getOptionLabel={(option) => option.productname}
               freeSolo
-              onChange={this.props.handleChangeAutoCom}
+              onChange={this.handleChangeAutoCom}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   margin="normal"
                   variant="outlined"
                   size="small"
-                  placeholder="Search"
-                  // value={productname}
-                  name="productname"
+                  placeholder="Search..."
+                  value={searchquery}
+                  name="searchquery"
                   onChange={(e) => {
-                    this.props.handleSearch(e);
+                    this.handleSearch(e);
+                  }}
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
                   }}
                 />
               )}
+              renderOption={(option, { inputValue }) => {
+                const matches = match(option.productname, inputValue);
+                const parts = parse(option.productname, matches);
+
+                return (
+                  <Link
+                    to={`/${option.productslug}`}
+                    onClick={(e) => this.aftersearch(e)}
+                  >
+                    <div>
+                      <img
+                        src={`${option.imageUrl}`}
+                        alt={""}
+                        height={50}
+                        width={50}
+                      />
+                      {parts.map((part, index) => (
+                        <span
+                          key={index}
+                          style={{ fontWeight: part.highlight ? 900 : 100 }}
+                        >
+                          {part.text}
+                        </span>
+                      ))}
+                    </div>
+                  </Link>
+                );
+              }}
             />
           </div>
 
@@ -137,11 +213,13 @@ class SiteHeader extends React.Component {
                 </div>
               ) : (
                 <div className="buttons">
-                  <Link to="/users/register" className="button is-primary">
-                    <strong>Sign up</strong>
+                  <Link to="/users/login">
+                    <Button variant="contained">Log In</Button>
                   </Link>
-                  <Link to="/users/login" className="button is-light">
-                    Log in
+                  <Link to="/users/register">
+                    <Button variant="contained" color="primary">
+                      Sign up
+                    </Button>
                   </Link>
                 </div>
               )}

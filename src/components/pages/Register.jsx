@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Columns, Form } from "react-bulma-components";
+import { Columns, Form } from "react-bulma-components";
 import { Link, withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import moment from "moment";
@@ -12,8 +12,10 @@ import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
-const { Field, Control, Label } = Form;
+const { Field, Control } = Form;
 
 class Register extends React.Component {
   constructor(props) {
@@ -121,15 +123,17 @@ class Register extends React.Component {
     return (
       <div className="columns is-mobile mt-2 has-text-centered">
         <div className="column is-one-third is-offset-one-third">
-          <h1 className="title mt-2 ">
-            <strong>Welcome to BUY THE WAY</strong>
-          </h1>
+          <Typography variant="h4" gutterBottom>
+            Welcome to BUY THE WAY
+          </Typography>
           <form
             onSubmit={(e) => {
               this.handleFormSubmission(e);
             }}
           >
-            <Label>Please create an account</Label>
+            <Typography variant="h7" gutterBottom>
+              Please create an account
+            </Typography>
             <Columns className="mb-0">
               <Columns.Column>
                 <FormControl fullWidth>
@@ -231,9 +235,11 @@ class Register extends React.Component {
               <Control>
                 <Button
                   type="submit"
-                  className="button is-primary is-fullwidth"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
                 >
-                  <strong>Create an account</strong>
+                  Create an account
                 </Button>
               </Control>
             </Field>
