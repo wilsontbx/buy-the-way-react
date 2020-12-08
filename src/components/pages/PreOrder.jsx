@@ -4,6 +4,9 @@ import Grid from '@material-ui/core/Grid'
 import { Typography, InputLabel, Button, TextField, Dialog, Paper, Select, MenuItem } from '@material-ui/core'
 import backendService from "../../services/backendAPI";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import { withCookies } from "react-cookie";
+
+
 
 
 
@@ -22,9 +25,10 @@ const useStyles = makeStyles(() => ({
     },
 
     item: {
-        direction: "column",
+        
         color: "black",
-        margin: "10px"
+        margin: "10px",
+
 
 
     },
@@ -35,7 +39,7 @@ const useStyles = makeStyles(() => ({
     }
 })
 )
-export default function PreOrder() {
+ function PreOrder (props) {
 
     const [productname, setProductname] = useState('')
     const [imgURL, setImageURL] = useState('')
@@ -47,6 +51,10 @@ export default function PreOrder() {
     const [collectspecial, setCollectSpecial] = useState('Is item Fragile?')
     const [returndate, setReturnDate] = useState('')
     const [open, setOpen] = useState(false)
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [email,setEmail] = useState('')
+
+
 
     // handle image upload to cloudinary via endpoint
 
@@ -70,9 +78,8 @@ export default function PreOrder() {
         )
             .then((res) => res.json())
             .then((res) => {
-                console.log(res.url)
-                setImageURL(res.url)
 
+                setImageURL(res.url)
 
             })
             .catch((err) => console.log(err));
@@ -88,11 +95,30 @@ export default function PreOrder() {
     };
 
     const handleFormSubmission = (e) => {
-        e.preventDefault();
-        
-        backendService.preorderCreate(productname, imgURL, country, category,  foodexpiry, foodchilled, foodspecial, collectspecial,returndate)
+
+        //check if user is logged in
+        const token = props.cookies.get("token")
+        console.log(token)
+        backendService
+            .getUserInfo(token)
+            .then((response)=>{
+                console.log(response.data)
+                if(!response.data.success) {
+                    setLoggedIn(false)
+                    alert('please register or log in before posting')
+
+                    return;
+
+                } else {
+                    setLoggedIn(true)
+                }
+         
+
+
+
+        backendService.preorderCreate(productname, imgURL, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate)
             .then(res => {
-                if (res.status === 200) {
+                if (res.status === 201) {
                     setOpen(false)
                     alert('Your pre-order has been submitted.')
 
@@ -101,6 +127,7 @@ export default function PreOrder() {
                     console.log('something wrong')
                     alert('Something went wrong')
                 }
+            })
             })
     }
     const classes = useStyles()
@@ -116,7 +143,7 @@ export default function PreOrder() {
                 </Grid>
 
 
-                <Grid item direction="column" xs={6} className={classes.item}>
+                <Grid item  xs={6} className={classes.item}>
                     <TextField
                         required
                         label="Product Name"
@@ -131,8 +158,9 @@ export default function PreOrder() {
                     ></TextField>
                 </Grid>
 
-                <Grid item direction="column" xs={6} className={classes.item}>
+                <Grid item  xs={6} className={classes.item}>
                     <Button
+                        className={classes.root}
                         variant="contained"
                         component="label"
                         size="small"
@@ -143,13 +171,13 @@ export default function PreOrder() {
                   <input accept="image/*" type="file" hidden />
                     </Button>
                 </Grid>
-                {imgURL !== '' ? (<Grid item direction="column" xs={6} className={classes.item} >
+                {imgURL !== '' ? (<Grid  xs={6} className={classes.item} >
                     <Paper variant="outlined">
                         <img src={imgURL} />
                     </Paper>
                 </Grid>) : ''}
 
-                <Grid item direction="column" xs={6} className={classes.item}>
+                <Grid item  xs={6} className={classes.item}>
                     <InputLabel id="country" >Select Country</InputLabel>
                     <Select
                         id="country"
@@ -164,7 +192,7 @@ export default function PreOrder() {
                         <MenuItem value={"Korea"}>Korea</MenuItem>
                     </Select>
                 </Grid>
-                <Grid item direction="column" xs={6} className={classes.item}>
+                <Grid item  xs={6} className={classes.item}>
                     <InputLabel id="category">Category</InputLabel>
                     <Select
                         labelId="category"
@@ -182,7 +210,7 @@ export default function PreOrder() {
                 </Grid>
                 {category && (category === 'Food' ? (
                     <React.Fragment>
-                        <Grid item direction="column" xs={6} className={classes.item}>
+                        <Grid item  xs={6} className={classes.item}>
                             <Select
                                 label="Chilling needed? "
                                 name="foodchilled"
@@ -196,7 +224,7 @@ export default function PreOrder() {
                                 <MenuItem value={"No"}>No</MenuItem>
                             </Select>
                         </Grid>
-                        <Grid item direction="column" xs={6} className={classes.item}>
+                        <Grid item  xs={6} className={classes.item}>
                             <Select
                                 label="Does Food have Expiry?? "
                                 name="foodchilled"
@@ -210,7 +238,7 @@ export default function PreOrder() {
                                 <MenuItem value={"No"}>No</MenuItem>
                             </Select>
                         </Grid>
-                        <Grid item direction="column" xs={6} className={classes.item}>
+                        <Grid item  xs={6} className={classes.item}>
                             <Select
                                 label="Special handling needed? "
                                 name="foodspecial"
@@ -223,7 +251,7 @@ export default function PreOrder() {
                                 <MenuItem value={"Yes"}>Yes</MenuItem>
                                 <MenuItem value={"No"}>No</MenuItem>
                             </Select>
-                        </Grid></React.Fragment>) : (<Grid item direction="column" xs={12} sm={6} md={3}>
+                        </Grid></React.Fragment>) : (<Grid className={classes.item} item  xs={12} sm={6} md={3}>
                             <Select
                                 label="Fragile? "
                                 name="collectspecial"
@@ -231,7 +259,7 @@ export default function PreOrder() {
                                 onChange={(e) => {
                                     setCollectSpecial(e.target.value)
                                 }}
-                            >
+                            >  <MenuItem value={"Is item Fragile??"}>Is item fragile?</MenuItem>
                                 <MenuItem value={"Yes"}>Yes</MenuItem>
                                 <MenuItem value={"No"}>No</MenuItem>
                             </Select>
@@ -239,13 +267,13 @@ export default function PreOrder() {
                     ))}
 
 
-                <Grid item direction="column" xs={6} className={classes.item}>
+                <Grid item  xs={6} className={classes.item}>
                     <TextField
                         required
                         id="date"
                         label="Return Date"
                         type="date"
-                        value=""
+                        value={returndate}
                         fullWidth
                         name="returndate"
                         onChange={function (e) {
@@ -253,11 +281,12 @@ export default function PreOrder() {
                         }}
                     ></TextField>
                 </Grid>
+                
                 {/* ================================== */}
                 {/* Dialog popup confirmation          */}
                 {/* ================================== */}
                 <Dialog open={open} onClose={handleClose}>
-                    <Grid item direction="column" >
+                    <Grid item>
                         <Typography
                             variant="h5"
                         > Please confirm your pre-order
@@ -275,7 +304,7 @@ export default function PreOrder() {
                                 setProductname(e.target.value)
                             }}
                         ></TextField>
-                        <Grid item direction="column" xs={6} className={classes.item} >
+                        <Grid item xs={6} className={classes.item} >
                             <Paper variant="outlined">
                                 <img src={imgURL} />
                             </Paper>
@@ -372,9 +401,11 @@ export default function PreOrder() {
                         color="primary"
                         onClick={handleFormSubmission}>
                         Confirm
+                        
+                    
                     </Button>
-                </Dialog>
 
+                </Dialog>
                 <Button
                     variant="outlined"
                     className={classes.root}
@@ -390,4 +421,8 @@ export default function PreOrder() {
 
 
     )
+    
+        
 }
+
+export default withCookies(PreOrder)
