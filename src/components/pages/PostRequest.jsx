@@ -29,7 +29,7 @@ class PostRequest extends React.Component {
       foodspecial: true,
       collectspecial: "no",
       existingProduct: false,
-      productnameautocomplete: "",
+      // productnameautocomplete: "",
       // prePopulatedImageUrl: undefined,
       // prePopulatedImageAlt: undefined,
       // prePopulatedCountry: undefined,
@@ -98,12 +98,12 @@ class PostRequest extends React.Component {
       foodchilled: true,
       foodspecial: true,
       collectspecial: "no",
-      productnameautocomplete: "",
+      // productnameautocomplete: "",
     });
   }
   setForm(e, value) {
     e.preventDefault();
-    let productname = this.state.productname;
+    // let productname = this.state.productname;
     let step = this.state.step;
     let error = this.state.formErr;
     let field = this.state.fieldName;
@@ -140,25 +140,27 @@ class PostRequest extends React.Component {
     } else {
       this.setState({
         step: step + value,
-        productnameautocomplete: productname,
+        // productnameautocomplete: productname,
       });
     }
   }
-  handleChangeAutoCom(event, value) {
-    event.preventDefault();
+  handleChangeAutoCom(e, value) {
+    // e.preventDefault();
+    // console.log(e);
+    const searchvalue = value?.productname || "";
     let searchResult = this.state.namelist;
     let index = null;
 
     for (let i = 0; i < searchResult.length; i++) {
-      if (searchResult[i].productname === value) {
+      if (searchResult[i].productname === searchvalue) {
         index = i;
       }
     }
 
     if (index !== null) {
       this.setState({
-        productname: value,
-        productnameautocomplete: value,
+        productname: searchvalue,
+        // productnameautocomplete: searchvalue,
         namelist: searchResult,
         existingProduct: true,
         imageUrl: searchResult[index].imageUrl,
@@ -179,7 +181,7 @@ class PostRequest extends React.Component {
         return;
       }
       let searchResult = [];
-      if (value !== "") {
+      if (value !== "" && value !== " ") {
         searchResult = response.data.result;
       }
       console.log(searchResult);

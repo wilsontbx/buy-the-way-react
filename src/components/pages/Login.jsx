@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form } from "react-bulma-components";
+import { Form } from "react-bulma-components";
 import { Link, withRouter } from "react-router-dom";
 import moment from "moment";
 import { withCookies } from "react-cookie";
@@ -12,6 +12,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 const { Field, Control, Label } = Form;
 
@@ -79,15 +81,18 @@ class Login extends React.Component {
     return (
       <div className="columns is-mobile mt-2">
         <div className="column is-one-fifth is-offset-two-fifths has-text-centered">
-          <h1 className="title mt-2">
-            <strong>We’ve missed you!</strong>
-          </h1>
+          <Typography variant="h4" gutterBottom>
+            We’ve missed you!
+          </Typography>
           <form
             onSubmit={(e) => {
               this.handleFormSubmission(e);
             }}
           >
-            <Label>Please enter username and password</Label>
+            <Typography variant="h7" gutterBottom>
+              Please enter username and password
+            </Typography>
+
             <Field>
               <FormControl fullWidth>
                 <TextField
@@ -148,9 +153,11 @@ class Login extends React.Component {
               <Control>
                 <Button
                   type="submit"
-                  className="button is-primary is-fullwidth"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
                 >
-                  <strong>Login</strong>
+                  Login
                 </Button>
               </Control>
             </Field>
