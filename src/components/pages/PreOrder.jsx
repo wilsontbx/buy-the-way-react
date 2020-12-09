@@ -5,8 +5,7 @@ import { Typography, InputLabel, Button, TextField, Dialog, Paper, Select, MenuI
 import backendService from "../../services/backendAPI";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { withCookies } from "react-cookie";
-
-
+import {Redirect} from 'react-router-dom'
 
 
 
@@ -29,13 +28,9 @@ const useStyles = makeStyles(() => ({
         color: "black",
         margin: "10px",
 
-
-
     },
     paper: {
         variant: "outlined",
-
-
     }
 })
 )
@@ -116,8 +111,6 @@ const useStyles = makeStyles(() => ({
                     setLoggedIn(true)
                     
                 }
-         
-               
 
 
         backendService.preorderCreate(productname, imgURL, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate, email)
@@ -125,6 +118,8 @@ const useStyles = makeStyles(() => ({
                 if (res.status === 201) {
                     setOpen(false)
                     alert('Your pre-order has been submitted.')
+                       ( < Redirect to = "/" />)
+
 
 
                 } else {
@@ -132,7 +127,15 @@ const useStyles = makeStyles(() => ({
                     alert('Something went wrong')
                 }
             })
-            })
+            .catch((err) => {
+                console.log(err)
+
+
+            });
+            }
+            
+            
+            )
     }
     const classes = useStyles()
     return (
@@ -256,6 +259,7 @@ const useStyles = makeStyles(() => ({
                                 <MenuItem value={"No"}>No</MenuItem>
                             </Select>
                         </Grid></React.Fragment>) : (<Grid className={classes.item} item  xs={12} sm={6} md={3}>
+                                
                             <Select
                                 label="Fragile? "
                                 name="collectspecial"
