@@ -35,10 +35,14 @@ class SiteHeader extends React.Component {
     });
   }
 
-  handleChangeAutoCom(event, value) {
+  handleAutoCom(event, value) {
     event.preventDefault();
-    // let searchResult = value?.productslug;
-    // this.props.history.push(`/${searchResult}`);
+    let searchResult = value?.productslug || "";
+    this.props.history.push(`/products/${searchResult}`);
+    this.setState({
+      searchlist: [],
+      searchquery: "",
+    });
   }
   aftersearch(e) {
     this.setState({
@@ -136,7 +140,9 @@ class SiteHeader extends React.Component {
               options={searchlist}
               getOptionLabel={(option) => option.productname}
               freeSolo
-              onChange={this.handleChangeAutoCom}
+              onChange={(e, v) => {
+                this.handleAutoCom(e, v);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
