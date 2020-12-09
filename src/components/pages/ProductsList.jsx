@@ -37,29 +37,29 @@ class ProductsList extends React.Component {
                         <h1>Product List</h1>
                         <hr />
                     </div>
-                    <div className="product-listing">
+                    <div data-resource-type="productslist" className="product-card">
                         <div className="row">
                             {
                                 this.state.products.length > 0 ? (
                                     this.state.products.map(item => {
                                         return (
-                                            <div className="col-4" key={item._id}>
-                                                <div className="product">
-                                                    <figure>
-                                                        <img className="img-fluid" src={item.imageUrl} alt="" />
-                                                        <figcaption>
-                                                            <p className="p-name">{item.productname}</p>
+                                            <div className="col-lg-2 col-md-3 col-4" style={{ "margin-bottom": "10px;", "display": "inline-block" }}>
+                                                <Link to={{
+                                                    pathname: `/products/${item.productslug}`,
+                                                    state: {
+                                                        product: item
+                                                    }
+                                                }}>
+
+                                                    <div className="card" style={{ width: "18rem" }}>
+                                                        <img src={item.imageUrl} className=".product-card__image," alt="" />
+                                                        <div className="card-body">
+                                                            <h5 className="card-title">{item.productname}</h5>
                                                             {/* <p className="p-price">${item.price.$numberDecimal}</p> */}
-                                                        </figcaption>
-                                                    </figure>
-                                                    <Link to={{
-                                                        pathname: `/products/${item.slug}`,
-                                                        state: {
-                                                            product: item
-                                                        }
-                                                    }}>
-                                                    </Link>
-                                                </div>
+
+                                                        </div>
+                                                    </div>
+                                                </Link>
                                             </div>
                                         )
                                     })
@@ -70,7 +70,7 @@ class ProductsList extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         )
     }
 }
