@@ -15,7 +15,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-const { Field, Control, Label } = Form;
+const { Field, Control } = Form;
 
 class Login extends React.Component {
   constructor(props) {
