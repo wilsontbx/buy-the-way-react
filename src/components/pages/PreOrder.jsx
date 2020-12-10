@@ -18,10 +18,21 @@ const useStyles = makeStyles(() => ({
         color: 'white',
         height: 48,
         padding: '10px 30px',
-        marginTop: '40px'
-
-
+        marginTop: '40px', 
+      
     },
+
+  button: {
+    background: 'linear-gradient(45deg, #3bd6c6 30%, #b3ecec 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 48,
+    padding: '10px 30px',
+    justifyContent: "center"
+
+  },
 
     item: {
         
@@ -167,7 +178,7 @@ const useStyles = makeStyles(() => ({
 
                 <Grid item  xs={6} className={classes.item}>
                     <Button
-                        className={classes.root}
+                        className={classes.button}
                         variant="contained"
                         component="label"
                         size="small"
@@ -316,11 +327,16 @@ const useStyles = makeStyles(() => ({
                                 setProductname(e.target.value)
                             }}
                         ></TextField>
+                         {imgURL !== "" ? 
+                         ( 
                         <Grid item xs={6} className={classes.item} >
                             <Paper variant="outlined">
-                                <img src={imgURL} />
+                               <img src={imgURL} />
                             </Paper>
-                        </Grid>
+                         </Grid>
+                         
+                         ):""}
+                       
                         <TextField
                             required
                             label="Country"
@@ -408,7 +424,7 @@ const useStyles = makeStyles(() => ({
 
                     </Grid>
                     <Button
-                        className={classes.root}
+                        className={classes.button}
                         variant="outlined"
                         color="primary"
                         onClick={handleFormSubmission}>
