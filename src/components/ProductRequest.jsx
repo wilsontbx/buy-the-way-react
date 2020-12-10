@@ -17,8 +17,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 
-import "./Product.scss";
-class Product extends React.Component {
+import "./ProductRequest.scss";
+class ProductRequest extends React.Component {
   // handle image upload to cloudinary via endpoint
 
   handleImageUpload = () => {
@@ -68,54 +68,67 @@ class Product extends React.Component {
 
     return (
       <div>
-        <Autocomplete
-          disabled={existingProduct ? true : false}
-          // options={namelist.map((option) => option.productname)}
-          options={namelist}
-          className="field"
-          getOptionLabel={(option) => option.productname}
-          freeSolo
-          fullWidth
-          // value={productnameautocomplete}
-          onChange={this.props.handleChangeAutoCom}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Product Name"
-              margin="normal"
-              variant="standard"
-              value={productname}
-              name="productname"
-              onChange={(e) => {
-                this.props.handleSearch(e);
-              }}
-              className="field"
-            />
-          )}
-          renderOption={(option, { inputValue }) => {
-            const matches = match(option.productname, inputValue);
-            const parts = parse(option.productname, matches);
+        {existingProduct ? (
+          <TextField
+            disabled={true}
+            label="Product Name"
+            margin="normal"
+            variant="standard"
+            value={productname}
+            name="productname"
+            fullWidth
+            className="field"
+          />
+        ) : (
+          <Autocomplete
+            disabled={existingProduct ? true : false}
+            // options={namelist.map((option) => option.productname)}
+            options={namelist}
+            className="field"
+            getOptionLabel={(option) => option.productname}
+            freeSolo
+            fullWidth
+            value={namelist.productname}
+            onChange={(e, v) => this.props.handleChangeAutoCom(e, v)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Product Name"
+                margin="normal"
+                variant="standard"
+                value={productname}
+                name="productname"
+                onChange={(e) => {
+                  this.props.handleSearch(e);
+                }}
+                className="field"
+              />
+            )}
+            renderOption={(option, { inputValue }) => {
+              const matches = match(option.productname, inputValue);
+              const parts = parse(option.productname, matches);
 
-            return (
-              <div>
-                <img
-                  src={`${option.imageUrl}`}
-                  alt={""}
-                  height={60}
-                  width={60}
-                />
-                {parts.map((part, index) => (
-                  <span
-                    key={index}
-                    style={{ fontWeight: part.highlight ? 900 : 100 }}
-                  >
-                    {part.text}
-                  </span>
-                ))}
-              </div>
-            );
-          }}
-        />
+              return (
+                <div>
+                  <img
+                    src={`${option.imageUrl}`}
+                    alt={""}
+                    height={60}
+                    width={60}
+                  />
+                  {parts.map((part, index) => (
+                    <span
+                      key={index}
+                      style={{ fontWeight: part.highlight ? 900 : 100 }}
+                    >
+                      {part.text}
+                    </span>
+                  ))}
+                </div>
+              );
+            }}
+          />
+        )}
         {existingProduct ? (
           <div className="field">
             <p className="help is-black is-italic">
@@ -281,4 +294,4 @@ class Product extends React.Component {
   }
 }
 
-export default Product;
+export default ProductRequest;

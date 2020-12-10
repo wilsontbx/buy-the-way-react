@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import Product from "../Product";
+import ProductRequest from "../ProductRequest";
 import TransactionRequest from "../TransactionRequest";
 import Confirmation from "../Comfirmation";
 import backendService from "../../services/backendAPI";
@@ -145,9 +145,10 @@ class PostRequest extends React.Component {
     }
   }
   handleChangeAutoCom(e, value) {
-    // e.preventDefault();
+    e.preventDefault();
     // console.log(e);
     const searchvalue = value?.productname || "";
+    console.log(searchvalue);
     let searchResult = this.state.namelist;
     let index = null;
 
@@ -351,7 +352,7 @@ class PostRequest extends React.Component {
                     Product Details
                   </Typography>
                   {errMsg}
-                  <Product
+                  <ProductRequest
                     setCurrentState={(e) => {
                       this.setCurrentState(e);
                     }}

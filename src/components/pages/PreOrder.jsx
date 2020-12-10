@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
-import { Typography, InputLabel, Button, TextField, Dialog, Paper, Select, MenuItem } from '@material-ui/core'
+import { Typography, InputLabel, Button, TextField, Dialog, Paper, Select, MenuItem} from '@material-ui/core'
 import backendService from "../../services/backendAPI";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { withCookies } from "react-cookie";
@@ -128,9 +128,9 @@ const useStyles = makeStyles(() => ({
                 }
             })
             .catch((err) => {
-                console.log(err)
-
-
+                console.log(err)  
+                
+                
             });
             }
             
@@ -281,9 +281,13 @@ const useStyles = makeStyles(() => ({
                         id="date"
                         label="Return Date"
                         type="date"
+                        defaultValue=""
                         value={returndate}
                         fullWidth
                         name="returndate"
+                        InputLabelProps={{
+                        shrink: true,
+                        }}
                         onChange={function (e) {
                             setReturnDate(e.target.value)
                         }}
