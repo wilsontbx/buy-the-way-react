@@ -51,16 +51,18 @@ const useStyles = makeStyles(() => ({
     const [imgURL, setImageURL] = useState('')
     const [country, setCountry] = useState('')
     const [category, setCategory] = useState('')
-    const [foodexpiry, setFoodExpiry] = useState('Is there expiry?')
-    const [foodchilled, setFoodChilled] = useState('Requires Chilling?')
-    const [foodspecial, setFoodSpecial] = useState('Requires Special Handling?')
-    const [collectspecial, setCollectSpecial] = useState('Is item Fragile?')
+    const [foodexpiry, setFoodExpiry] = useState('')
+    const [foodchilled, setFoodChilled] = useState('')
+    const [foodspecial, setFoodSpecial] = useState('')
+    const [collectspecial, setCollectSpecial] = useState('')
     const [returndate, setReturnDate] = useState('')
     const [open, setOpen] = useState(false)
     const [loggedIn, setLoggedIn] = useState(false)
     const [email,setEmail] = useState('')
+    const [token,setToken] = useState('')
 
-
+    
+    
 
     // handle image upload to cloudinary via endpoint
 
@@ -98,18 +100,26 @@ const useStyles = makeStyles(() => ({
 
     const handleOpen = () => {
         setOpen(true);
+      const tkn = props.cookies.get("token")
+      setToken(tkn)
+      backendService
+        .getUserInfo(token)
+        .then((response) => {
+          let x = response.data.email
+          setEmail(x)
+
+          console.log(email)
+        })
+        
     };
 
-    const handleEmail = (something) => {
-      setEmail(something)
-    }
+ 
 
     const handleFormSubmission = (e) => {
 
         //check if user is logged in
         const token = props.cookies.get("token")
-        //token ok
-        console.log(token)
+       
         backendService
             .getUserInfo(token)
             .then((response)=>{
