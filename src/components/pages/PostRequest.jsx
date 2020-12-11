@@ -253,6 +253,7 @@ class PostRequest extends React.Component {
               return;
             }
             console.log(response);
+            alert(`Post request for ${productname} is successful created`);
             this.props.history.push("/");
           })
           .catch((err) => {

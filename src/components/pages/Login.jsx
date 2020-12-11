@@ -90,7 +90,7 @@ class Login extends React.Component {
             }}
           >
             <Typography variant="h7" gutterBottom>
-              Please enter username and password
+              Please enter email and password
             </Typography>
 
             <Field>

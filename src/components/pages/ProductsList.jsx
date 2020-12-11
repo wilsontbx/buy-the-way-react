@@ -5,6 +5,7 @@ import backendService from "../../services/backendAPI";
 import { withRouter } from "react-router-dom";
 import { withCookies } from "react-cookie";
 import Typography from "@material-ui/core/Typography";
+import { Grid } from "@material-ui/core";
 
 class ProductsList extends React.Component {
   constructor(props) {
@@ -37,38 +38,38 @@ class ProductsList extends React.Component {
         <Typography variant="h4" gutterBottom>
           Request List
         </Typography>
-        <div data-resource-type="productslist" className="product-card">
-          <div className="row">
-            {this.state.products.length > 0
-              ? this.state.products.map((item) => {
-                  return (
-                    <div className="col">
-                      <Link
-                        to={{
-                          pathname: `/products/${item.productslug}`,
-                          state: {
-                            product: item,
-                          },
-                        }}
-                      >
-                        <div className="card" style={{ width: "18rem" }}>
-                          <img
-                            src={item.imageUrl}
-                            className=".product-card__image,"
-                            alt=""
-                          />
-                          <div className="card-body">
-                            <h5 className="card-title">{item.productname}</h5>
-                            {/* <p className="p-price">${item.price.$numberDecimal}</p> */}
-                          </div>
+
+        <Grid container spacing={1}>
+          {this.state.products.length > 0
+            ? this.state.products.map((item) => {
+                return (
+                  <Grid item xs={3}>
+                    <Link
+                      to={{
+                        pathname: `/products/${item.productslug}`,
+                        state: {
+                          product: item,
+                        },
+                      }}
+                    >
+                      <div className="card">
+                        <img
+                          src={item.imageUrl}
+                          className="product-card"
+                          alt=""
+                        />
+                        <div className="card-body">
+                          <h5 className="card-title">{item.productname}</h5>
+
+                          {/* <p className="p-price">${item.price.$numberDecimal}</p> */}
                         </div>
-                      </Link>
-                    </div>
-                  );
-                })
-              : ""}
-          </div>
-        </div>
+                      </div>
+                    </Link>
+                  </Grid>
+                );
+              })
+            : ""}
+        </Grid>
       </div>
     );
   }
