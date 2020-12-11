@@ -213,7 +213,7 @@ class SiteHeader extends React.Component {
                     <strong>{username != null ? username : ""}</strong>
                   </Link>
                   <div className="navbar-dropdown is-right">
-                    <Link className="navbar-item">Dashboard</Link>
+                    <Link to="/users/dashboard"className="navbar-item">Dashboard</Link>
                     <hr className="navbar-divider" />
                     <Link
                       to="/"

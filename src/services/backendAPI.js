@@ -105,10 +105,11 @@ const backendAPI = {
     foodchilled,
     foodspecial,
     collectspecial,
-    returndate
+    returndate,
+    email
   ) => {
     return axiosInstance.post(
-      "products/preorder/create",
+      "/products/preorder/create",
       qs.stringify({
         productname: productname,
         imgURL: imgURL,
@@ -119,14 +120,34 @@ const backendAPI = {
         foodspecial: foodspecial,
         collectspecial: collectspecial,
         returndate: returndate,
+        email: email,
       })
     );
   },
   getProductsList: () => {
     return axiosInstance.get("/products/list");
   },
+
   getProductBySlug: (slug) => {
     return axiosInstance.get(`/products/${slug}`);
+  },
+
+  updateUserInfo: (token, email, firstName, lastName, userName) => {
+    return axiosInstance.post(
+      "/users/update",
+      qs.stringify({
+        token: token,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        userName: userName,
+      }),
+      {
+        headers: {
+          auth_token: token,
+        },
+      }
+    );
   },
 };
 

@@ -9,6 +9,7 @@ import PostRequest from "./components/pages/PostRequest";
 import PreOrder from "./components/pages/PreOrder";
 import ProductsList from "./components/pages/ProductsList";
 import Product from "./components/pages/Product";
+import Dashboard from "./components/pages/Dashboard";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Switch>
           <Route path="/postrequest" component={PostRequest}></Route>
           <Route path="/preorder" component={PreOrder}></Route>
+          <Route path="/users/dashboard" component={Dashboard}></Route>
           <GuestRoute path="/users/login" component={Login} />
           <GuestRoute path="/users/register" component={Register} />
           <Route path="/products/:slug" component={Product} />
