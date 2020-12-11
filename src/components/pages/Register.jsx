@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import React from "react";
 import { Columns, Form } from "react-bulma-components";
 import { Link, withRouter } from "react-router-dom";
@@ -14,8 +15,18 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import "./Register.scss";
 
 const { Field, Control } = Form;
+const checkSpace = RegExp(/[_\- ]+$/);
+const validEmailRegex = RegExp(
+  /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+);
+const validateForm = (errors) => {
+  let valid = true;
+  Object.values(errors).forEach((val) => val.length > 0 && (valid = false));
+  return valid;
+};
 
 class Register extends React.Component {
   constructor(props) {
@@ -27,39 +38,56 @@ class Register extends React.Component {
       email: "",
       password: "",
       formErr: "",
+      errors: {
+        firstname: "",
+        lastname: "",
+        username: "",
+        email: "",
+        password: "",
+      },
       showPassword: false,
     };
   }
 
-  // handleFirstnameChange(e) {
-  //   this.setState({
-  //     firstname: e.target.value,
-  //   });
-  // }
+  handleChange(e) {
+    e.preventDefault();
+    const { name, value } = e.target;
+    let errors = this.state.errors;
 
-  // handleLastnameChange(e) {
-  //   this.setState({
-  //     lastname: e.target.value,
-  //   });
-  // }
+    switch (name) {
+      case "firstname":
+        errors.firstname =
+          value.length <= 0 || checkSpace.test(value)
+            ? "cannot empty or contain any space"
+            : "";
+        break;
+      case "lastname":
+        errors.lastname =
+          value.length <= 0 || checkSpace.test(value)
+            ? "cannot empty or contain any space"
+            : "";
+        break;
+      case "username":
+        errors.username =
+          value.length <= 0 || checkSpace.test(value)
+            ? "cannot empty or contain any space"
+            : "";
+        break;
+      case "email":
+        errors.email = validEmailRegex.test(value) ? "" : "Email is not valid!";
+        break;
+      case "password":
+        errors.password =
+          value.length <= 0 || checkSpace.test(value)
+            ? "cannot empty or contain any space"
+            : "";
+        break;
+      default:
+        break;
+    }
 
-  // handleUsernameChange(e) {
-  //   this.setState({
-  //     username: e.target.value,
-  //   });
-  // }
-
-  // handleEmailChange(e) {
-  //   this.setState({
-  //     email: e.target.value,
-  //   });
-  // }
-
-  // handlePasswrdChange(e) {
-  //   this.setState({
-  //     password: e.target.value,
-  //   });
-  // }
+    this.setState({ errors, [name]: value });
+  }
 
   setCurrentState(e) {
     const state = {};
@@ -76,50 +104,64 @@ class Register extends React.Component {
 
   handleFormSubmission(e) {
     e.preventDefault();
-    backendService
-      .register(
-        this.state.firstname,
-        this.state.lastname,
-        this.state.username,
-        this.state.email,
-        this.state.password
-      )
-      .then((response) => {
-        if (!response.data.success) {
-          this.setState({
-            formErr: "This email address already exists",
-          });
-          return;
-        }
-        backendService
-          .login(this.state.email, this.state.password)
-          .then((response) => {
-            if (!response.data.success) {
-              this.setState({
-                formErr: "This email address already exists",
-              });
-              return;
-            }
-            this.props.cookies.set("token", response.data.token, {
-              path: "/",
-              expires: moment.unix(response.data.expiresAt).toDate(),
-            });
-            window.location.reload();
-            // this.props.history.push("/");
-          })
-          .catch((err) => {
+    if (
+      validateForm(this.state.errors) &&
+      this.state.firstname &&
+      this.state.lastname &&
+      this.state.username &&
+      this.state.email &&
+      this.state.password
+    ) {
+      console.log("hehr");
+      backendService
+        .register(
+          this.state.firstname,
+          this.state.lastname,
+          this.state.username,
+          this.state.email,
+          this.state.password
+        )
+        .then((response) => {
+          if (!response.data.success) {
             this.setState({
-              formErr: "Error occurred in form, please check values",
+              formErr: "This email address already exists",
             });
+            return;
+          }
+          backendService
+            .login(this.state.email, this.state.password)
+            .then((response) => {
+              if (!response.data.success) {
+                this.setState({
+                  formErr: "This email address already exists",
+                });
+                return;
+              }
+              this.props.cookies.set("token", response.data.token, {
+                path: "/",
+                expires: moment.unix(response.data.expiresAt).toDate(),
+              });
+              window.location.reload();
+            })
+            .catch((err) => {
+              this.setState({
+                formErr: "Error occurred in form, please check values",
+              });
+            });
+        })
+        .catch((err) => {
+          this.setState({
+            formErr: "Error occurred in form, please check values",
           });
-      })
-      .catch((err) => {
-        this.setState({
-          formErr: "Error occurred in form, please check values",
         });
+    } else {
+      this.setState({
+        formErr: "Error occurred in form, please check values",
       });
+    }
   }
   render() {
+    const { errors } = this.state;
     return (
       <div className="columns is-mobile mt-2 has-text-centered">
         <div className="column is-one-third is-offset-one-third">
@@ -143,9 +185,13 @@ class Register extends React.Component {
                     name="firstname"
                     label="First name"
                     onChange={(e) => {
-                      this.setCurrentState(e);
+                      this.handleChange(e);
                     }}
+                    noValidate
                   />
+                  {errors.firstname.length > 0 && (
+                    <span className="error">{errors.firstname}</span>
+                  )}
                 </FormControl>
               </Columns.Column>
               <Columns.Column>
@@ -156,9 +202,13 @@ class Register extends React.Component {
                     name="lastname"
                     label="Last name"
                     onChange={(e) => {
-                      this.setCurrentState(e);
+                      this.handleChange(e);
                     }}
+                    noValidate
                   />
+                  {errors.lastname.length > 0 && (
+                    <span className="error">{errors.lastname}</span>
+                  )}
                 </FormControl>
               </Columns.Column>
             </Columns>
@@ -170,9 +220,13 @@ class Register extends React.Component {
                   name="username"
                   label="Username"
                   onChange={(e) => {
-                    this.setCurrentState(e);
+                    this.handleChange(e);
                   }}
+                  noValidate
                 />
+                {errors.username.length > 0 && (
+                  <span className="error">{errors.username}</span>
+                )}
               </FormControl>
             </Field>
             <Field>
@@ -184,9 +238,13 @@ class Register extends React.Component {
                   label="Email"
                   placeholder="example@email.com"
                   onChange={(e) => {
-                    this.setCurrentState(e);
+                    this.handleChange(e);
                   }}
+                  noValidate
                 />
+                {errors.email.length > 0 && (
+                  <span className="error">{errors.email}</span>
+                )}
               </FormControl>
             </Field>
 
@@ -201,7 +259,7 @@ class Register extends React.Component {
                 type={this.state.showPassword ? "text" : "password"}
                 value={this.state.password}
                 onChange={(e) => {
-                  this.setCurrentState(e);
+                  this.handleChange(e);
                 }}
                 endAdornment={
                   <InputAdornment position="end">
@@ -222,10 +280,14 @@ class Register extends React.Component {
                     </IconButton>
                   </InputAdornment>
                 }
+                noValidate
               />
+              {errors.password.length > 0 && (
+                <span className="error">{errors.password}</span>
+              )}
             </FormControl>
             {this.state.formErr !== "" ? (
-              <div className="form-group">
+              <div className="error">
                 <p>{this.state.formErr}</p>
               </div>
             ) : (

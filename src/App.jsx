@@ -18,11 +18,10 @@ function App() {
         <Switch>
           <Route path="/postrequest" component={PostRequest}></Route>
           <Route path="/preorder" component={PreOrder}></Route>
-          <Route path="/products/list" component={ProductsList}></Route>>
           <Route path="/users/dashboard" component ={Dashboard}></Route>
           <GuestRoute path="/users/login" component={Login} />
           <GuestRoute path="/users/register" component={Register} />
-          <Route path="/"></Route>
+          <Route path="/" component={ProductsList}></Route>
         </Switch>
       </Router>
     </div>

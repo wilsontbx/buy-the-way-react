@@ -132,7 +132,7 @@ class ProductRequest extends React.Component {
         {existingProduct ? (
           <div className="field">
             <p className="help is-black is-italic">
-              Do you to change to other product?
+              Do you wish to change to other product?
             </p>
             <Button
               variant="contained"
