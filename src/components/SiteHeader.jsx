@@ -39,12 +39,14 @@ class SiteHeader extends React.Component {
     event.preventDefault();
     let searchResult = value?.productslug || "";
     this.props.history.push(`/products/${searchResult}`);
+    window.location.reload();
     this.setState({
       searchlist: [],
       searchquery: "",
     });
   }
   aftersearch(e) {
+    window.location.reload();
     this.setState({
       searchquery: "",
       searchlist: [],
@@ -103,9 +105,9 @@ class SiteHeader extends React.Component {
         <div className="navbar-brand">
           <Link to="/" id="logo">
             <img
-              src="https://res.cloudinary.com/duc6i2tt0/image/upload/v1607177262/128878427_401576140894283_3860951528942828977_n_jnmrh2.png"
+              src="https://res.cloudinary.com/duc6i2tt0/image/upload/v1607709264/4f69b180-c56a-431c-a3b4-2d0eaf493d2b_200x200_toxnkn.png"
               alt=""
-              width="100"
+              width="150"
             />
           </Link>
         </div>
