@@ -109,7 +109,7 @@ const backendAPI = {
     email
   ) => {
     return axiosInstance.post(
-      "products/preorder/create",
+      "/products/preorder/create",
       qs.stringify({
         productname: productname,
         imgURL: imgURL,
@@ -127,6 +127,24 @@ const backendAPI = {
   getProductsList: () => {
     return axiosInstance.get("/products/list");
   },
+  updateUserInfo: (token, email, firstName, lastName, userName) => {
+    return axiosInstance.post("/users/update", 
+      qs.stringify({
+        token:token,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        userName: userName
+      })
+    , 
+    {
+      headers: {
+        auth_token: token,
+      },
+    }
+
+    )
+  }
 };
 
 export default backendAPI;

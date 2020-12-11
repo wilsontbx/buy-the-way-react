@@ -1,241 +1,217 @@
-import React, { useState } from 'react'
-import { withCookies } from 'react-cookie'
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import Box from '@material-ui/core/Box';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
+import React from 'react'
+import backendService from '../../services/backendAPI'
+import { withCookies } from "react-cookie"
+import { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
-import backendService from '../../services/backendAPI';
+import Button from '@material-ui/core/Button'
+import Typepography from '@material-ui/core/Typography'
+import Typography from '@material-ui/core/Typography'
+import Dialog from '@material-ui/core/Dialog'
+import TextField from '@material-ui/core/TextField'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContentText from '@material-ui/core/DialogContentText'
 
-
-
-
-
-
-
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
-      </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
+    table: {
+        minWidth: 650,
+    },
     root: {
-        display: 'flex',
-    },
-    toolbar: {
-        paddingRight: 24, // keep right padding when drawer closed
-    },
-    toolbarIcon: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
-        ...theme.mixins.toolbar,
-    },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    menuButton: {
-        marginRight: 36,
-    },
-    menuButtonHidden: {
-        display: 'none',
-    },
-    title: {
-        flexGrow: 1,
-    },
-    drawerPaper: {
-        position: 'relative',
-        whiteSpace: 'nowrap',
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerPaperClose: {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        width: theme.spacing(7),
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9),
-        },
-    },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-        backgroundColor:
-            theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-    },
-    paper: {
-        padding: theme.spacing(2),
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
-    },
-    fixedHeight: {
-        height: 240,
-    },
-}));
-function Dashboard(props) {
-    const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
-    const [email, setEmail] = useState('')
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
+        // backgroundImage:'url(http://res.cloudinary.com/duc6i2tt0/image/upload/v1607643700/signature_dxqwab.png)',
+        background: 'linear-gradient(45deg, #3bd6c6 30%, #b3ecec 90%)',
+        border: 0,
+        borderRadius: 3,
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        color: 'white',
+        height: 48,
+        padding: '10px 30px',
+        marginTop: '40px',
 
-    const getUserData = (props) => {
-
-        //getUserInfo 
-
-        const token = props.cookies.get("token")
-        console.log(token)
-
-        backendService.getUserInfo(token).then(response => {
-            console.log(response)
-            setEmail(response.data.email)
-
-        }).then(
-            console.log(email)
-        )
+    },
+    button: {
+        background: 'linear-gradient(45deg, #3bd6c6 30%, #b3ecec 90%)',
+        border: 0,
+        borderRadius: 3,
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        color: 'white',
+        height: 48,
+        padding: '10px 30px',
+        justifyContent: "center"
 
     }
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+});
 
-    return (
-        <div className={classes.root}>
-            <CssBaseline />
-            {/* <AppBar
-                    position="absolute"
-                    className={clsx(classes.appBar, open && classes.appBarShift)}
-                >
-                    <Toolbar className={classes.toolbar}>
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={toggleDrawer}
-                            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            color="inherit"
-                            noWrap
-                            className={classes.title}
-                        >
-                            Dashboard
-                        </Typography>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
-                    </Toolbar>
-                </AppBar> */}
-            <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-                }}
-                open={open}
-            >
-                <div className={classes.toolbarIcon}>
-                    <IconButton onClick={toggleDrawer}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>{mainListItems}</List>
-                <Divider />
-                {/* <List>{secondaryListItems}</List> */}
-            </Drawer>
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={3}>
-                        {/* Chart */}
-                        <Grid item xs={12} md={8} lg={9}>
-                            <Paper className={fixedHeightPaper}>
-                                <Chart />
-                            </Paper>
-                        </Grid>
-                        {/* Recent Deposits */}
-                        <Grid item xs={12} md={4} lg={3}>
-                            <Paper className={fixedHeightPaper}>
-                                <Deposits />
-                            </Paper>
-                        </Grid>
-                        {/* Recent Orders */}
-                        <Grid item xs={12}>
-                            <Paper className={classes.paper}>
-                                <Orders />
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                    <Box sx={{ pt: 4 }}>
-                        <Copyright />
-                    </Box>
-                    {getUserData(props, email)}
-                </Container>
-            </main>
-        </div>
-    );
+function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
 }
 
+const rows = [
+    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData('Eclair', 262, 16.0, 24, 6.0),
+    createData('Cupcake', 305, 3.7, 67, 4.3),
+    createData('Gingerbread', 356, 16.0, 49, 3.9),
+];
 
+function Dashboard(props) {
+
+    // const [token,setToken] = useState('')
+    const [email, setEmail] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [userName, setUsername] = useState('')
+    const [open, setOpen] = useState(false)
+
+    const classes = useStyles();
+
+    const token = props.cookies.get("token")
+
+
+    // const handleClose = () => {
+    //     setOpen(false);
+    // };
+    backendService
+        .getUserInfo(token)
+        .then(response => {
+            
+            setEmail(response.data.email)
+            setFirstName(response.data.first_name)
+            setLastName(response.data.last_name)
+            setUsername(response.data.username)
+            
+        })
+
+    const handleUpdate = () => {
+        backendService
+            .updateUserInfo(token, email, firstName, lastName, userName)
+            .then(res => {
+                if (res.status === 201) {
+                    setOpen(false)
+                    alert('Your pre-order has been submitted.')
+                } else {
+                    console.log('something wrong')
+                    alert('Something went wrong')
+                }
+            })
+    }
+
+
+
+    return (
+        <Grid className={classes.root}>
+            <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell><Typepography variant="h5">Email</Typepography></TableCell>
+                            <TableCell align="right"><Typography variant="h6">{email}</Typography></TableCell>
+
+                        </TableRow>
+                        <TableRow>
+                            <TableCell><Typepography variant="h5">First Name</Typepography></TableCell>
+                            <TableCell align="right"><Typography variant="h6">{firstName}</Typography></TableCell>
+
+                        </TableRow>
+                        <TableRow>
+                            <TableCell><Typepography variant="h5">Last Name</Typepography></TableCell>
+                            <TableCell align="right"><Typography variant="h6">{lastName}</Typography></TableCell>
+
+                        </TableRow>
+                        <TableRow>
+                            <TableCell><Typepography variant="h5">Username</Typepography></TableCell>
+                            <TableCell align="right"><Typography variant="h6">{userName}</Typography></TableCell>
+
+                        </TableRow>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell align="right"><Button
+                                
+                                className={classes.button}
+                                onClick={() => { setOpen(true) }}
+
+                            >Update</Button></TableCell>
+
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+
+                        <TableRow>
+                            <TableCell> </TableCell>
+
+                        </TableRow>
+
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            <div>
+                
+                <Dialog open={open} onClose={() => { setOpen(false) }} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Update your particulars</DialogTitle>
+                    <DialogContent>
+
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Email Address"
+                            type="email"
+                            fullWidth
+                            onChange={function (e) {setEmail(e.target.value)}}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="First Name"
+                            type="text"
+                            fullWidth
+                            onChange={((e) => { setFirstName(e.target.value) })}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Last Name"
+                            type="text"
+                            fullWidth
+                            onChange={((e) => { setLastName(e.target.value) })}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="UserName"
+                            type="text"
+                            fullWidth
+                            onChange={((e) => { setUsername(e.target.value) })}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => { setOpen(false) }} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleUpdate} color="primary">
+                            Update
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+            </div>
+        </Grid>
+    )
+
+
+
+}
 
 export default withCookies(Dashboard)
