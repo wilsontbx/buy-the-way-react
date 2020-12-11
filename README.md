@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+# Buy-The-Way
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Project Name : Buy-The-Way Phase 1
 
-## Available Scripts
+Purpose : To provide a "marketplace" that allows users to buy things from overseas through travellers who have extra luggage space. At the same time, users may use this 'marketplace' to discover what's trending, or what fellow Singaporeans buy from oversea!
 
-In the project directory, you can run:
+### Approach 
 
-### `npm start`
+Version : 1.0
+Duration : 4 weeks
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Research
+2. User stories
+3. Features
+4. Project approval
+5. Project planning
+- Agile - Identified the features that provide maximum values
+- Trello tracking of progress
+- Consensus to learn 
+6. Logistics
+7. System setup
+8. Design
+9. Development
+10. Data preparation, Test, Bug-fix
+11. Basic styling
+12. Preparation for commit
+13. Document technical details
+14. Document technical challenges
+15. Document the Improvement 
+    - Enhancement in upcoming version
+16. Presentation and sharing of project
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Inspiration !
+* People cannot travel during COVID but wish to buy limited edition product from oversea. 
+* People who can travel ✈️ or enjoy shopping, wish to earn some 💰 during COVID, out of their EXTRA large luggage
+* Airfrov.com
+* Hong Kong Singapore Air Travel Bubble | Cathay Pacific
 
-### `npm test`
+### Features
+* Header
+1. Sign-up
+2. Login 
+3. Logout
+4. User profile (next version)
+5. Change password (next version)
+6. Search
+7. Dashboard (upcoming)
+7. Favourite (next version)
+8. Purchase history (next version)
+9. Inbox/notification tab (next version)
+10. How the apps works (next version)
+11. Country (next version)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Post product request (Buyer)
+- Product name
+- Image
+- Category: Food, Collectible
+- Brand (next version)
+- Price
+- Deal Method (next version)
+- Venue  + google map (next version)
+- Payment : Paynow, paylah (cashless)(next version)
 
-### `npm run build`
+* Post pre-order (Traveller)
+- Product name
+- Image
+- Category: Food, Collectible
+- Brand (next version)
+- Price (next version)
+- Return Date
+- Mark favourite (next version)
+- Give Rating (next version)
+- Review (next version)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Posting on main page
+1. Trending request (Show all request - upcoming ! Highest to lowest no of request - next version)
+2. Pre-orders by Traveller (next version)
+3. Latest Recommendation (next version)
+4. Promote (next version)
+5. Categories of service (next version)
+6. Popular countries (next version)
+7. Recent User Reviews (next version)
+8. Brand (next version)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* Footer
+1. Direct to other web site social media page (next version)
+2. Quick Links (PDPA, FAQ…) (next version)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Specifications / Technical Details
+* MERN stack
+* 4 models : User, Product, Transaction, Pre-order. 
+- Model with 1-to-many relationship. User can post request (as buyer) and create pre-order (as traveller)
+- Separate model not related
+* Deploy online and accessible to the public via Heroku
 
-### `npm run eject`
+### Technical challenges / challenges faced
+* Challenges:
+- Work committment
+- Unable to secure availability with the same timing
+- Different strength
+- Improvement of UI takes more time (Bulma, Material UI)
+- Heroku is slow
+- Not fully apply Agile Methodology and Scrum framework in reality
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Reference
+https://www.airfrov.com/
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Versioning
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+| Date | Description | Updated by | Version | 
+|:--------:|:--------:|:----------------:|:--------:|
+| 11 Dec | Creation of version 1 | Fanny Fam | 1.0 |
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Team members
 
-## Learn More
+* Tan Boon Xian, Edwin Lim, Fanny Fam
+* [Buy-The-Way-Front](https://github.com/wilsontbx/buy-the-way-react)
+* [Buy-The-Way-Back-end](https://github.com/wilsontbx/buy-the-way-react)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
