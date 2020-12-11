@@ -50,17 +50,17 @@ const useStyles = makeStyles({
     }
 });
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
+// function createData(name, calories, fat, carbs, protein) {
+//     return { name, calories, fat, carbs, protein };
+// }
 
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+// const rows = [
+//     createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+//     createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+//     createData('Eclair', 262, 16.0, 24, 6.0),
+//     createData('Cupcake', 305, 3.7, 67, 4.3),
+//     createData('Gingerbread', 356, 16.0, 49, 3.9),
+// ];
 
 function Dashboard(props) {
 
@@ -70,6 +70,7 @@ function Dashboard(props) {
     const [lastName, setLastName] = useState('')
     const [userName, setUsername] = useState('')
     const [open, setOpen] = useState(false)
+    const [init, setInit] = useState(true)
 
     const classes = useStyles();
 
@@ -79,21 +80,14 @@ function Dashboard(props) {
     // const handleClose = () => {
     //     setOpen(false);
     // };
-    backendService
-        .getUserInfo(token)
-        .then(response => {
-            
-            setEmail(response.data.email)
-            setFirstName(response.data.first_name)
-            setLastName(response.data.last_name)
-            setUsername(response.data.username)
-            
-        })
+
 
     const handleUpdate = () => {
+
         backendService
             .updateUserInfo(token, email, firstName, lastName, userName)
             .then(res => {
+                console.log(res)
                 if (res.status === 201) {
                     setOpen(false)
                     alert('Your pre-order has been submitted.')
@@ -104,110 +98,127 @@ function Dashboard(props) {
             })
     }
 
+    const initState = () => {
+        backendService
+            .getUserInfo(token)
+            .then(response => {
+
+                setEmail(response.data.email)
+                setFirstName(response.data.first_name)
+                setLastName(response.data.last_name)
+                setUsername(response.data.username)
+                setInit(false)
+
+            })
+
+    }
 
 
     return (
-        <Grid className={classes.root}>
-            <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell><Typepography variant="h5">Email</Typepography></TableCell>
-                            <TableCell align="right"><Typography variant="h6">{email}</Typography></TableCell>
+        <div>
+            {init ? initState() : ''}
+            <Grid className={classes.root}>
+                <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell><Typepography variant="h5">Email</Typepography></TableCell>
+                                <TableCell align="right"><Typography variant="h6">{email}</Typography></TableCell>
 
-                        </TableRow>
-                        <TableRow>
-                            <TableCell><Typepography variant="h5">First Name</Typepography></TableCell>
-                            <TableCell align="right"><Typography variant="h6">{firstName}</Typography></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell><Typepography variant="h5">First Name</Typepography></TableCell>
+                                <TableCell align="right"><Typography variant="h6">{firstName}</Typography></TableCell>
 
-                        </TableRow>
-                        <TableRow>
-                            <TableCell><Typepography variant="h5">Last Name</Typepography></TableCell>
-                            <TableCell align="right"><Typography variant="h6">{lastName}</Typography></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell><Typepography variant="h5">Last Name</Typepography></TableCell>
+                                <TableCell align="right"><Typography variant="h6">{lastName}</Typography></TableCell>
 
-                        </TableRow>
-                        <TableRow>
-                            <TableCell><Typepography variant="h5">Username</Typepography></TableCell>
-                            <TableCell align="right"><Typography variant="h6">{userName}</Typography></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell><Typepography variant="h5">Username</Typepography></TableCell>
+                                <TableCell align="right"><Typography variant="h6">{userName}</Typography></TableCell>
 
-                        </TableRow>
-                        <TableRow>
-                            <TableCell></TableCell>
-                            <TableCell align="right"><Button
-                                
-                                className={classes.button}
-                                onClick={() => { setOpen(true) }}
+                            </TableRow>
+                            <TableRow>
+                                <TableCell></TableCell>
+                                <TableCell align="right"><Button
 
-                            >Update</Button></TableCell>
+                                    className={classes.button}
+                                    onClick={() => { setOpen(true) }}
 
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
+                                >Update</Button></TableCell>
 
-                        <TableRow>
-                            <TableCell> </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
 
-                        </TableRow>
+                            <TableRow>
+                                <TableCell> </TableCell>
 
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                            </TableRow>
 
-            <div>
-                
-                <Dialog open={open} onClose={() => { setOpen(false) }} aria-labelledby="form-dialog-title">
-                    <DialogTitle id="form-dialog-title">Update your particulars</DialogTitle>
-                    <DialogContent>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
 
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Email Address"
-                            type="email"
-                            fullWidth
-                            onChange={function (e) {setEmail(e.target.value)}}
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="First Name"
-                            type="text"
-                            fullWidth
-                            onChange={((e) => { setFirstName(e.target.value) })}
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="Last Name"
-                            type="text"
-                            fullWidth
-                            onChange={((e) => { setLastName(e.target.value) })}
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="UserName"
-                            type="text"
-                            fullWidth
-                            onChange={((e) => { setUsername(e.target.value) })}
-                        />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => { setOpen(false) }} color="primary">
-                            Cancel
+                <div>
+
+                    <Dialog open={open} onClose={() => { setOpen(false) }} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Update your particulars</DialogTitle>
+                        <DialogContent>
+
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Email Address"
+                                type="email"
+                                fullWidth
+                                onChange={function (e) { setEmail(e.target.value) }}
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="First Name"
+                                type="text"
+                                fullWidth
+                                onChange={((e) => { setFirstName(e.target.value) })}
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="Last Name"
+                                type="text"
+                                fullWidth
+                                onChange={((e) => { setLastName(e.target.value) })}
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="name"
+                                label="UserName"
+                                type="text"
+                                fullWidth
+                                onChange={((e) => { setUsername(e.target.value) })}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => { setOpen(false) }} color="primary">
+                                Cancel
                         </Button>
-                        <Button onClick={handleUpdate} color="primary">
-                            Update
+                            <Button onClick={handleUpdate} color="primary">
+                                Update
                         </Button>
-                    </DialogActions>
-                </Dialog>
+                        </DialogActions>
+                    </Dialog>
 
-            </div>
-        </Grid>
+                </div>
+            </Grid>
+        </div>
     )
 
 
