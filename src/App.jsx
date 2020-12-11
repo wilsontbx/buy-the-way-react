@@ -8,6 +8,7 @@ import "bulma";
 import PostRequest from "./components/pages/PostRequest";
 import PreOrder from './components/pages/PreOrder'
 import ProductsList from './components/pages/ProductsList'
+import Dashboard from "./components/pages/Dashboard";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/postrequest" component={PostRequest}></Route>
           <Route path="/preorder" component={PreOrder}></Route>
           <Route path="/products/list" component={ProductsList}></Route>>
+          <Route path="/users/dashboard" component ={Dashboard}></Route>
           <GuestRoute path="/users/login" component={Login} />
           <GuestRoute path="/users/register" component={Register} />
           <Route path="/"></Route>

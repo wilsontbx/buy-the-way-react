@@ -100,18 +100,21 @@ const useStyles = makeStyles(() => ({
         setOpen(true);
     };
 
+    const handleEmail = (something) => {
+      setEmail(something)
+    }
+
     const handleFormSubmission = (e) => {
 
         //check if user is logged in
         const token = props.cookies.get("token")
+        //token ok
         console.log(token)
         backendService
             .getUserInfo(token)
             .then((response)=>{
-                console.log(response.data.email)
-                // const email = response.data.email
-                // console.log(email)
-                setEmail(response.data.email)
+               let x = response.data.email 
+                setEmail(x)
                 if(!response.data.success) {
                     setLoggedIn(false)
                     alert('please register or log in before posting')
@@ -122,14 +125,14 @@ const useStyles = makeStyles(() => ({
                     setLoggedIn(true)
                     
                 }
-
+              
 
         backendService.preorderCreate(productname, imgURL, country, category, foodexpiry, foodchilled, foodspecial, collectspecial, returndate, email)
             .then(res => {
                 if (res.status === 201) {
                     setOpen(false)
                     alert('Your pre-order has been submitted.')
-                       ( < Redirect to = "/" />)
+                      
 
 
 
@@ -138,11 +141,7 @@ const useStyles = makeStyles(() => ({
                     alert('Something went wrong')
                 }
             })
-            .catch((err) => {
-                console.log(err)  
-                
-                
-            });
+            
             }
             
             
