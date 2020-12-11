@@ -123,13 +123,20 @@ class SiteHeader extends React.Component {
             <div className="navbar-item has-dropdown is-hoverable">
               <Link className="navbar-link">More Info</Link>
               <div className="navbar-dropdown">
-                <Link className="navbar-item">Travel Bubble Information</Link>
-                <Link className="navbar-item">What to do before you leave</Link>
+                <a
+                  href="https://www.cathaypacific.com/cx/en_SG/travel-bubble/hong-kong-singapore/overview.html"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="navbar-item"
+                >
+                  Travel Bubble Information
+                </a>
+                {/* <Link className="navbar-item">What to do before you leave</Link>
                 <Link className="navbar-item">
                   What to do when you get back
                 </Link>
                 <hr className="navbar-divider" />
-                <Link className="navbar-item">Contact Us</Link>
+                <Link className="navbar-item">Contact Us</Link> */}
               </div>
             </div>
           </div>
