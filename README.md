@@ -27,7 +27,7 @@ Duration : 4 weeks
 13. Document technical details
 14. Document technical challenges
 15. Document the Improvement 
-    - Enhancement in upcoming version
+- Enhancement in upcoming version
 16. Presentation and sharing of project
 
 ### Inspiration !
@@ -37,7 +37,7 @@ Duration : 4 weeks
 * Hong Kong Singapore Air Travel Bubble | Cathay Pacific
 
 ### Features
-* Header
+#### Header
 1. Sign-up
 2. Login 
 3. Logout
@@ -51,7 +51,7 @@ Duration : 4 weeks
 10. How the apps works (next version)
 11. Country (next version)
 
-* Post product request (Buyer)
+#### Post product request (Buyer)
 - Product name
 - Image
 - Category: Food, Collectible
@@ -61,7 +61,7 @@ Duration : 4 weeks
 - Venue  + google map (next version)
 - Payment : Paynow, paylah (cashless)(next version)
 
-* Post pre-order (Traveller)
+#### Post pre-order (Traveller)
 - Product name
 - Image
 - Category: Food, Collectible
@@ -72,7 +72,7 @@ Duration : 4 weeks
 - Give Rating (next version)
 - Review (next version)
 
-* Posting on main page
+#### Posting on main page
 1. Trending request (Show all request - upcoming ! Highest to lowest no of request - next version)
 2. Pre-orders by Traveller (next version)
 3. Latest Recommendation (next version)
@@ -82,7 +82,7 @@ Duration : 4 weeks
 7. Recent User Reviews (next version)
 8. Brand (next version)
 
-* Footer
+#### Footer
 1. Direct to other web site social media page (next version)
 2. Quick Links (PDPA, FAQ…) (next version)
 
@@ -94,11 +94,12 @@ Duration : 4 weeks
 * Deploy online and accessible to the public via Heroku
 
 ### Technical challenges / challenges faced
-* Challenges:
+#### Challenges:
 - Work committment
 - Unable to secure availability with the same timing
 - Different strength
 - Improvement of UI takes more time (Bulma, Material UI)
+- Team members code in different way and may amend the same file.
 - Heroku is slow
 - Not fully apply Agile Methodology and Scrum framework in reality
 
